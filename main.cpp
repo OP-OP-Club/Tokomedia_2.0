@@ -2,6 +2,8 @@
 #include<windows.h>
 #include<mysql.h>
 #include<string.h>
+#include<time.h>
+#include<math.h>
 
 #include"start/startProgram.h"
 

@@ -40,7 +40,14 @@
 		<Unit filename="env.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="migration/migrateDatabaseTable.h" />
+		<Unit filename="model/modelEmail.h" />
+		<Unit filename="model/modelEmailInbox.h" />
+		<Unit filename="model/modelEmailSent.h" />
+		<Unit filename="service/serviceEmail.h" />
 		<Unit filename="start/startProgram.h" />
+		<Unit filename="tools/hasherTools.h" />
+		<Unit filename="tools/sha256.cpp" />
+		<Unit filename="tools/sha256.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

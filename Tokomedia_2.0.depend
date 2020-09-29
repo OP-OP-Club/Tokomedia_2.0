@@ -1,14 +1,18 @@
 # depslib dependency file v1.0
-1601382539 source:c:\users\david yap\desktop\go\src\tokomedia_2.0\main.cpp
+1601389907 source:c:\users\david yap\desktop\go\src\tokomedia_2.0\main.cpp
 	<stdio.h>
 	<windows.h>
 	<mysql.h>
 	<string.h>
+	<time.h>
+	<math.h>
 	"start/startProgram.h"
 
-1601384644 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
+1601391896 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
 	"../config/connectDatabase.h"
 	"../migration/migrateDatabaseTable.h"
+	"../service/serviceEmail.h"
+	"../tools/hasherTools.h"
 
 1601383878 c:\users\david yap\desktop\go\src\tokomedia_2.0\config\connectdatabase.h
 	"../env.h"
@@ -17,4 +21,34 @@
 
 1601384637 c:\users\david yap\desktop\go\src\tokomedia_2.0\migration\migratedatabasetable.h
 	"../config/connectDatabase.h"
+
+1601391862 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemail.h
+	"../env.h"
+	"../config/connectDatabase.h"
+	"../model/modelEmail.h"
+	"../tools/hasherTools.h"
+
+1601386138 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\modelemail.h
+	"modelEmailInbox.h"
+	"modelEmailSent.h"
+
+1601386146 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\modelemailinbox.h
+	"modelEmail.h"
+	"modelEmailSent.h"
+
+1601386181 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\modelemailsent.h
+	"modelEmail.h"
+	"modelEmailInbox.h"
+
+1601391872 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\hashertools.h
+	"sha256.h"
+	"../env.h"
+
+1601390786 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\sha256.h
+	<string>
+	<stdint.h>
+
+1601391243 source:c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\sha256.cpp
+	"sha256.h"
+	<string.h>
 
