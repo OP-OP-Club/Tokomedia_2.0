@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1601382539 source:c:\users\david yap\desktop\go\src\tokomedia_2.0\main.cpp
+	<stdio.h>
+	<windows.h>
+	<mysql.h>
+	<string.h>
+	"start/startProgram.h"
+
+1601384644 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
+	"../config/connectDatabase.h"
+	"../migration/migrateDatabaseTable.h"
+
+1601383878 c:\users\david yap\desktop\go\src\tokomedia_2.0\config\connectdatabase.h
+	"../env.h"
+
+1601383844 c:\users\david yap\desktop\go\src\tokomedia_2.0\env.h
+
+1601384637 c:\users\david yap\desktop\go\src\tokomedia_2.0\migration\migratedatabasetable.h
+	"../config/connectDatabase.h"
+
