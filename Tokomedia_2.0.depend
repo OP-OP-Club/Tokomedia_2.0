@@ -1,14 +1,15 @@
 # depslib dependency file v1.0
-1601389907 source:c:\users\david yap\desktop\go\src\tokomedia_2.0\main.cpp
+1601475663 source:c:\users\david yap\desktop\go\src\tokomedia_2.0\main.cpp
 	<stdio.h>
 	<windows.h>
 	<mysql.h>
 	<string.h>
 	<time.h>
 	<math.h>
+	<stdlib.h>
 	"start/startProgram.h"
 
-1601391896 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
+1601480879 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
 	"../config/connectDatabase.h"
 	"../migration/migrateDatabaseTable.h"
 	"../service/serviceEmail.h"
@@ -22,7 +23,8 @@
 1601384637 c:\users\david yap\desktop\go\src\tokomedia_2.0\migration\migratedatabasetable.h
 	"../config/connectDatabase.h"
 
-1601391862 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemail.h
+1601480403 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemail.h
+	"serviceEmailInbox.h"
 	"../env.h"
 	"../config/connectDatabase.h"
 	"../model/modelEmail.h"
@@ -40,9 +42,12 @@
 	"modelEmail.h"
 	"modelEmailInbox.h"
 
-1601391872 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\hashertools.h
+1601479184 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\hashertools.h
 	"sha256.h"
 	"../env.h"
+	"cursorTools.h"
+	"timeTools.h"
+	"descriptionConverter.h"
 
 1601390786 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\sha256.h
 	<string>
@@ -51,4 +56,29 @@
 1601391243 source:c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\sha256.cpp
 	"sha256.h"
 	<string.h>
+
+1601473039 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\cursortools.h
+	"hasherTools.h"
+	"timeTools.h"
+	"descriptionConverter.h"
+
+1601475054 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\timetools.h
+	<iostream>
+	<time.h>
+	<string>
+	"hasherTools.h"
+	"descriptionConverter.h"
+	"cursorTools.h"
+
+1601476046 c:\users\david yap\desktop\go\src\tokomedia_2.0\tools\descriptionconverter.h
+	"cursorTools.h"
+	"timeTools.h"
+	"hasherTools.h"
+
+1601480979 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemailinbox.h
+	"../env.h"
+	"../config/connectDatabase.h"
+	"../model/modelEmail.h"
+	"../tools/cursorTools.h"
+	"serviceEmail.h"
 

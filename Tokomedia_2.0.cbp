@@ -44,10 +44,14 @@
 		<Unit filename="model/modelEmailInbox.h" />
 		<Unit filename="model/modelEmailSent.h" />
 		<Unit filename="service/serviceEmail.h" />
+		<Unit filename="service/serviceEmailInbox.h" />
 		<Unit filename="start/startProgram.h" />
+		<Unit filename="tools/cursorTools.h" />
+		<Unit filename="tools/descriptionConverter.h" />
 		<Unit filename="tools/hasherTools.h" />
 		<Unit filename="tools/sha256.cpp" />
 		<Unit filename="tools/sha256.h" />
+		<Unit filename="tools/timeTools.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

@@ -3,13 +3,15 @@
 #include"sha256.h"
 #include"../env.h"
 
-//#include "cursorTools.h"
-//#include "timeTools.h"
-//#include "descriptionConverter.h"
+#include "cursorTools.h"
+#include "timeTools.h"
+#include "descriptionConverter.h"
 
-using namespace std;
+char* sha256Hashing(char* word);
+bool HasherCompare(char* pass, char* hashedPassword);
+char* ToLower(char* word);
 
-char* sha256Hashing(char* word) {
+char* sha256Hashing(char* word){
     srand(time(0));
     char arr[53] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -26,9 +28,9 @@ char* sha256Hashing(char* word) {
     return sha256(before_hashed);
 }
 
-bool HasherCompare(char* pass, char* hashedPassword) {
+bool HasherCompare(char* pass, char* hashedPassword){
     SHA256 sha256;
-    string arr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    char arr[53] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     Environment env;
 
     bool flag = false;
