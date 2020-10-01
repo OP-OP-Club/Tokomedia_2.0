@@ -9,13 +9,13 @@
 	<stdlib.h>
 	"start/startProgram.h"
 
-1601480879 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
+1601558713 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
 	"../config/connectDatabase.h"
 	"../migration/migrateDatabaseTable.h"
 	"../service/serviceEmail.h"
 	"../tools/hasherTools.h"
 
-1601383878 c:\users\david yap\desktop\go\src\tokomedia_2.0\config\connectdatabase.h
+1601554689 c:\users\david yap\desktop\go\src\tokomedia_2.0\config\connectdatabase.h
 	"../env.h"
 
 1601383844 c:\users\david yap\desktop\go\src\tokomedia_2.0\env.h
@@ -23,7 +23,8 @@
 1601384637 c:\users\david yap\desktop\go\src\tokomedia_2.0\migration\migratedatabasetable.h
 	"../config/connectDatabase.h"
 
-1601480403 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemail.h
+1601557277 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemail.h
+	"serviceEmailSent.h"
 	"serviceEmailInbox.h"
 	"../env.h"
 	"../config/connectDatabase.h"
@@ -75,10 +76,18 @@
 	"timeTools.h"
 	"hasherTools.h"
 
-1601480979 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemailinbox.h
+1601557282 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemailinbox.h
 	"../env.h"
 	"../config/connectDatabase.h"
 	"../model/modelEmail.h"
 	"../tools/cursorTools.h"
 	"serviceEmail.h"
+	"serviceEmailSent.h"
+
+1601558275 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemailsent.h
+	"../env.h"
+	"../config/connectDatabase.h"
+	"../model/modelEmail.h"
+	"serviceEmail.h"
+	"serviceEmailInbox.h"
 

@@ -1,23 +1,21 @@
-#ifndef SERVICE_EMAIL_INBOX_PARAM
-#define SERVICE_EMAIL_INBOX_PARAM 1
+#ifndef SERVICE_PARAM_EMAIL_SENT
+#define SERVICE_PARAM_EMAIL_SENT 1
 
 #include"../env.h"
 #include"../config/connectDatabase.h"
 #include"../model/modelEmail.h"
-#include"../tools/cursorTools.h"
-
 #include"serviceEmail.h"
-#include"serviceEmailSent.h"
+#include"serviceEmailInbox.h"
 
-bool ServiceCreateEmailInbox(struct NewEmailInbox input);
-bool ServiceUpdateEmailInbox(struct UpdateEmailInbox input);
-bool ServiceDeleteEmailInbox(int id);
-struct EmailInbox* ServiceGetEmailInboxByID(int id);
-struct EmailInbox* ServiceGetEmailInboxByUserID(int user_id);
-struct EmailInbox* ServiceGetArchivedEmailInboxByUserID(int user_id);
-struct EmailInbox* ServiceGetEmailInboxAll();
+bool ServiceCreateEmailSent(struct NewEmailSent input);
+bool ServiceUpdateEmailSent(struct UpdateEmailSent input);
+bool ServiceDeleteEmailSent(int id);
+struct EmailSent* ServiceGetEmailSentByID(int id);
+//struct EmailSent* ServiceGetEmailSentByUserID(int user_id);
+//struct EmailSent* ServiceGetArchivedEmailSentByUserID(int user_id);
+//struct EmailSent* ServiceGetEmailSentAll();
 
-bool ServiceCreateEmailInbox(struct NewEmailInbox input) {
+bool ServiceCreateEmailSent(struct NewEmailSent input) {
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -29,42 +27,9 @@ bool ServiceCreateEmailInbox(struct NewEmailInbox input) {
 
     char query[1000];
 
-    sprintf(query, "INSERT INTO %s (sender_name, subject, description, available, read_status, sent_at, receiver_email_id) VALUES (\'%s\', \'%s\', \'%s\', %d, %d, \'%s\', %d);", env.UserGetEmailInboxTableName(), input.sender_name, input.subject, input.description, input.available, input.read_status, input.sent_at, input.receiver_email_id);
+    sprintf(query, "INSERT INTO %s (receiver_name, subject, description, available, sent_at, sender_email_id) VALUES (\'%s\', \'%s\', \'%s\', %d, \'%s\', %d);", env.UserGetEmailSentTableName(), input.receiver_name, input.subject, input.description, input.available, input.sent_at, input.sender_email_id);
 
     const char *q = query;
-
-    getchar();
-
-    int q_state = 0;
-    q_state = mysql_query(conn, q);
-
-    mysql_close(conn);
-    if(!q_state){
-        return true;
-    }
-    else{
-        printf("FAIL\n");
-        return false;
-    }
-}
-
-bool ServiceUpdateEmailInbox(struct UpdateEmailInbox input) {
-    MYSQL *conn = ConnectDatabase();
-
-    if(!conn){
-        mysql_close(conn);
-        return false;
-    }
-
-    Environment env;
-
-    char query[1000];
-
-    sprintf(query, "UPDATE %s SET sender_name = \'%s\', subject = \'%s\', description = \'%s\', available = %d, read_status = %d, sent_at = \'%s\', receiver_email_id = %d WHERE id = %d;", env.UserGetEmailInboxTableName(), input.sender_name, input.subject, input.description, input.available, input.read_status, input.sent_at, input.receiver_email_id, input.id);
-
-    const char *q = query;
-
-    printf("%s\n", query);
 
     int q_state = 0;
     q_state = mysql_query(conn, q);
@@ -78,7 +43,7 @@ bool ServiceUpdateEmailInbox(struct UpdateEmailInbox input) {
     }
 }
 
-bool ServiceDeleteEmailInbox(int id) {
+bool ServiceUpdateEmailSent(struct UpdateEmailSent input) {
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -90,12 +55,9 @@ bool ServiceDeleteEmailInbox(int id) {
 
     char query[1000];
 
-    sprintf(query, "DELETE FROM %s WHERE id = %d;", env.UserGetEmailInboxTableName(), id);
+    sprintf(query, "UPDATE %s SET receiver_name = \'%s\', subject = \'%s\', description = \'%s\', available = %d, sent_at = \'%s\', sender_email_id = %d  WHERE id = %d;", env.UserGetEmailSentTableName(), input.receiver_name, input.subject, input.description, input.available, input.sent_at, input.sender_email_id, input.id);
 
     const char *q = query;
-
-    printf("%s\n", query);
-
 
     int q_state = 0;
     q_state = mysql_query(conn, q);
@@ -109,20 +71,48 @@ bool ServiceDeleteEmailInbox(int id) {
     }
 }
 
-struct EmailInbox* ServiceGetEmailInboxByID(int id) {
+bool ServiceDeleteEmailSent(int id) {
     MYSQL *conn = ConnectDatabase();
-    struct EmailInbox *email_inbox = NULL;
 
     if(!conn){
         mysql_close(conn);
-        return email_inbox;
+        return false;
     }
 
     Environment env;
 
     char query[1000];
 
-    sprintf(query, "SELECT * FROM %s WHERE id = %d;", env.UserGetEmailInboxTableName(), id);
+    sprintf(query, "DELETE FROM %s WHERE id = %d;", env.UserGetEmailSentTableName(), id);
+
+    const char *q = query;
+
+    int q_state = 0;
+    q_state = mysql_query(conn, q);
+
+    mysql_close(conn);
+    if(!q_state){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+struct EmailSent* ServiceGetEmailSentByID(int id){
+    MYSQL *conn = ConnectDatabase();
+    struct EmailSent *email_sent = NULL;
+
+    if(!conn){
+        mysql_close(conn);
+        return email_sent;
+    }
+
+    Environment env;
+
+    char query[1000];
+
+    sprintf(query, "SELECT * FROM %s WHERE id = %d;", env.UserGetEmailSentTableName(), id);
 
     const char *q = query;
 
@@ -134,30 +124,29 @@ struct EmailInbox* ServiceGetEmailInboxByID(int id) {
         MYSQL_ROW row;
 
         while(row = mysql_fetch_row(res)){
-            email_inbox = (struct EmailInbox*) malloc(sizeof(struct EmailInbox));
-            email_inbox->id = Atoi(row[0]);
-            email_inbox->sender_name = row[1];
-            email_inbox->subject = row[2];
-            email_inbox->description = row[3];
-            email_inbox->available = Atoi(row[4]);
-            email_inbox->read_status = Atoi(row[5]);
-            email_inbox->sent_at = row[6];
-            email_inbox->receiver_email_id = Atoi(row[7]);
-            email_inbox->next = NULL;
+            email_sent = (struct EmailSent*) malloc(sizeof(struct EmailSent));
+            email_sent->id = Atoi(row[0]);
+            email_sent->receiver_name = row[1];
+            email_sent->subject = row[2];
+            email_sent->description = row[3];
+            email_sent->available = Atoi(row[4]);
+            email_sent->sent_at = row[5];
+            email_sent->sender_email_id = Atoi(row[6]);
+            email_sent->next = NULL;
         }
 
         mysql_close(conn);
-        return email_inbox;
+        return email_sent;
     }
     else{
         mysql_close(conn);
-        return email_inbox;
+        return email_sent;
     }
 }
 
-struct EmailInbox* ServiceGetEmailInboxByUserID(int user_id) {
+struct EmailSent* ServiceGetEmailSentByUserID(int user_id){
     MYSQL *conn = ConnectDatabase();
-    struct EmailInbox *head, *tail;
+    struct EmailSent *head, *tail;
     head = tail = NULL;
 
     if(!conn){
@@ -169,7 +158,7 @@ struct EmailInbox* ServiceGetEmailInboxByUserID(int user_id) {
 
     char query[1000];
 
-    sprintf(query, "SELECT * FROM %s WHERE receiver_email_id = %d AND available = 1 ORDER BY sent_at DESC;", env.UserGetEmailInboxTableName(), user_id);
+    sprintf(query, "SELECT * FROM %s WHERE sender_email_id = %d AND available = 1 ORDER BY sent_at DESC;", env.UserGetEmailSentTableName(), user_id);
 
     const char *q = query;
 
@@ -181,15 +170,14 @@ struct EmailInbox* ServiceGetEmailInboxByUserID(int user_id) {
         MYSQL_ROW row;
 
         while(row = mysql_fetch_row(res)){
-            struct EmailInbox *temp = (struct EmailInbox*) malloc(sizeof(struct EmailInbox));
+            struct EmailSent *temp = (struct EmailSent*) malloc(sizeof(struct EmailSent));
             temp->id = Atoi(row[0]);
-            temp->sender_name = row[1];
+            temp->receiver_name = row[1];
             temp->subject = row[2];
             temp->description = row[3];
             temp->available = Atoi(row[4]);
-            temp->read_status = Atoi(row[5]);
-            temp->sent_at = row[6];
-            temp->receiver_email_id = Atoi(row[7]);
+            temp->sent_at = row[5];
+            temp->sender_email_id = Atoi(row[6]);
             temp->next = NULL;
 
             if(head == NULL){
@@ -210,9 +198,9 @@ struct EmailInbox* ServiceGetEmailInboxByUserID(int user_id) {
     }
 }
 
-struct EmailInbox* ServiceGetArchivedEmailInboxByUserID(int user_id) {
+struct EmailSent* ServiceGetArchivedEmailSentByUserID(int user_id){
     MYSQL *conn = ConnectDatabase();
-    struct EmailInbox *head, *tail;
+    struct EmailSent *head, *tail;
     head = tail = NULL;
 
     if(!conn){
@@ -224,7 +212,7 @@ struct EmailInbox* ServiceGetArchivedEmailInboxByUserID(int user_id) {
 
     char query[1000];
 
-    sprintf(query, "SELECT * FROM %s WHERE receiver_email_id = %d AND available = 2 ORDER BY sent_at DESC;", env.UserGetEmailInboxTableName(), user_id);
+    sprintf(query, "SELECT * FROM %s WHERE sender_email_id = %d AND available = 2 ORDER BY sent_at DESC;", env.UserGetEmailSentTableName(), user_id);
 
     const char *q = query;
 
@@ -236,15 +224,14 @@ struct EmailInbox* ServiceGetArchivedEmailInboxByUserID(int user_id) {
         MYSQL_ROW row;
 
         while(row = mysql_fetch_row(res)){
-            struct EmailInbox *temp = (struct EmailInbox*) malloc(sizeof(struct EmailInbox));
+            struct EmailSent *temp = (struct EmailSent*) malloc(sizeof(struct EmailSent));
             temp->id = Atoi(row[0]);
-            temp->sender_name = row[1];
+            temp->receiver_name = row[1];
             temp->subject = row[2];
             temp->description = row[3];
             temp->available = Atoi(row[4]);
-            temp->read_status = Atoi(row[5]);
-            temp->sent_at = row[6];
-            temp->receiver_email_id = Atoi(row[7]);
+            temp->sent_at = row[5];
+            temp->sender_email_id = Atoi(row[6]);
             temp->next = NULL;
 
             if(head == NULL){
@@ -265,9 +252,9 @@ struct EmailInbox* ServiceGetArchivedEmailInboxByUserID(int user_id) {
     }
 }
 
-struct EmailInbox* ServiceGetEmailInboxAll() {
+struct EmailSent* ServiceGetEmailSentAll(){
     MYSQL *conn = ConnectDatabase();
-    struct EmailInbox *head, *tail;
+    struct EmailSent *head, *tail;
     head = tail = NULL;
 
     if(!conn){
@@ -279,7 +266,7 @@ struct EmailInbox* ServiceGetEmailInboxAll() {
 
     char query[1000];
 
-    sprintf(query, "SELECT * FROM %s;", env.UserGetEmailInboxTableName());
+    sprintf(query, "SELECT * FROM %s;", env.UserGetEmailSentTableName());
 
     const char *q = query;
 
@@ -291,15 +278,14 @@ struct EmailInbox* ServiceGetEmailInboxAll() {
         MYSQL_ROW row;
 
         while(row = mysql_fetch_row(res)){
-            struct EmailInbox *temp = (struct EmailInbox*) malloc(sizeof(struct EmailInbox));
+            struct EmailSent *temp = (struct EmailSent*) malloc(sizeof(struct EmailSent));
             temp->id = Atoi(row[0]);
-            temp->sender_name = row[1];
+            temp->receiver_name = row[1];
             temp->subject = row[2];
             temp->description = row[3];
             temp->available = Atoi(row[4]);
-            temp->read_status = Atoi(row[5]);
-            temp->sent_at = row[6];
-            temp->receiver_email_id = Atoi(row[7]);
+            temp->sent_at = row[5];
+            temp->sender_email_id = Atoi(row[6]);
             temp->next = NULL;
 
             if(head == NULL){
@@ -320,4 +306,4 @@ struct EmailInbox* ServiceGetEmailInboxAll() {
     }
 }
 
-#endif // SERVICE_EMAIL_INBOX_PARAM
+#endif // SERVICE_PARAM_EMAIL

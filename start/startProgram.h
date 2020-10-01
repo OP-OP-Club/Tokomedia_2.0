@@ -36,22 +36,55 @@ void StartProject(){
 
     mysql_close(conn);
 
-    struct UpdateEmailInbox inbox;
+    struct EmailSent *head = ServiceGetEmailSentByID(2);
 
-    inbox.id = 1;
-    inbox.available = 1;
-    inbox.description = "abcdegh";
-    inbox.read_status = 2;
-    inbox.receiver_email_id = 5;
-    inbox.sender_name = "name";
-    inbox.sent_at = GetTimeNow();
-    inbox.subject = "a subject";
-
-    Environment env;
-
-    if(ServiceUpdateEmailInbox(inbox)){
-        printf("AAAAA\n");
+    while(head != NULL){
+        printf("id: %d\n%d\n%s\n%s\n%d\n%s\n%s\n", head->id, head->available, head->description, head->receiver_name, head->sender_email_id, head->sent_at, head->subject);
+        head = head->next;
     }
+
+//    struct UpdateEmailSent inbox;
+//    inbox.id = 1;
+//    inbox.available = 2;
+//    inbox.description = "testinsadasgjigjrtijtrtion";
+//    inbox.receiver_name = "esfageefafa";
+//    inbox.sender_email_id = 2;
+//    inbox.sent_at = GetTimeNow();
+//    inbox.subject = "subject dummy";
+//
+//    if(ServiceUpdateEmailSent(inbox)){
+//        printf("Berhasil\n");
+//    }
+
+//    struct NewEmailSent inbox;
+//    inbox.available = 2;
+//    inbox.description = "testing description";
+//    inbox.receiver_name = "david";
+//    inbox.sender_email_id = 2;
+//    inbox.sent_at = GetTimeNow();
+//    inbox.subject = "subject dummy";
+//
+//    if(ServiceCreateEmailSent(inbox)){
+//        printf("Berhasil\n");
+//    }
+
+
+//    struct UpdateEmailInbox inbox;
+//
+//    inbox.id = 1;
+//    inbox.available = 1;
+//    inbox.description = "abcdegh";
+//    inbox.read_status = 2;
+//    inbox.receiver_email_id = 5;
+//    inbox.sender_name = "name";
+//    inbox.sent_at = GetTimeNow();
+//    inbox.subject = "a subject";
+//
+//    Environment env;
+//
+//    if(ServiceUpdateEmailInbox(inbox)){
+//        printf("AAAAA\n");
+//    }
 
 //    struct Email *head = ServiceGetEmailAll();
 //
