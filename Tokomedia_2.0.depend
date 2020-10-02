@@ -9,18 +9,19 @@
 	<stdlib.h>
 	"start/startProgram.h"
 
-1601558713 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
+1601651786 c:\users\david yap\desktop\go\src\tokomedia_2.0\start\startprogram.h
 	"../config/connectDatabase.h"
 	"../migration/migrateDatabaseTable.h"
-	"../service/serviceEmail.h"
+	"../service/Email/serviceEmail.h"
+	"../service/Tokomedia/serviceTokomediaAccount.h"
 	"../tools/hasherTools.h"
 
 1601554689 c:\users\david yap\desktop\go\src\tokomedia_2.0\config\connectdatabase.h
 	"../env.h"
 
-1601383844 c:\users\david yap\desktop\go\src\tokomedia_2.0\env.h
+1601650945 c:\users\david yap\desktop\go\src\tokomedia_2.0\env.h
 
-1601384637 c:\users\david yap\desktop\go\src\tokomedia_2.0\migration\migratedatabasetable.h
+1601650766 c:\users\david yap\desktop\go\src\tokomedia_2.0\migration\migratedatabasetable.h
 	"../config/connectDatabase.h"
 
 1601557277 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\serviceemail.h
@@ -90,4 +91,88 @@
 	"../model/modelEmail.h"
 	"serviceEmail.h"
 	"serviceEmailInbox.h"
+
+1601650077 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\email\serviceemail.h
+	"serviceEmailSent.h"
+	"serviceEmailInbox.h"
+	"../../env.h"
+	"../../config/connectDatabase.h"
+	"../../model/Email/modelEmail.h"
+	"../../tools/hasherTools.h"
+
+1601650068 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\email\serviceemailsent.h
+	"../../env.h"
+	"../../config/connectDatabase.h"
+	"../../model/Email/modelEmail.h"
+	"serviceEmail.h"
+	"serviceEmailInbox.h"
+
+1601650072 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\email\serviceemailinbox.h
+	"../../env.h"
+	"../../config/connectDatabase.h"
+	"../../model/Email/modelEmail.h"
+	"../../tools/cursorTools.h"
+	"serviceEmail.h"
+	"serviceEmailSent.h"
+
+1601646100 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\email\modelemail.h
+	"modelEmailInbox.h"
+	"modelEmailSent.h"
+
+1601646099 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\email\modelemailinbox.h
+	"modelEmail.h"
+	"modelEmailSent.h"
+
+1601646099 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\email\modelemailsent.h
+	"modelEmail.h"
+	"modelEmailInbox.h"
+
+1601652035 c:\users\david yap\desktop\go\src\tokomedia_2.0\service\tokomedia\servicetokomediaaccount.h
+	"../../env.h"
+	"../../config/connectDatabase.h"
+	"../../model/Email/modelEmail.h"
+	"../../model/Tokomedia/modelCartTokomedia.h"
+	"../../tools/hasherTools.h"
+
+1601651884 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\tokomedia\modelcarttokomedia.h
+	"modelTokomediaAccount.h"
+	"modelItemlistTokomedia.h"
+	"modelOrderDetailsTokomedia.h"
+	"modelTokomediaShopAccount.h"
+	"modelTransactionTokomedia.h"
+
+1601651298 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\tokomedia\modeltokomediaaccount.h
+	"modelCartTokomedia.h"
+	"modelItemlistTokomedia.h"
+	"modelOrderDetailsTokomedia.h"
+	"modelTokomediaShopAccount.h"
+	"modelTransactionTokomedia.h"
+
+1601651910 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\tokomedia\modelitemlisttokomedia.h
+	"modelTokomediaAccount.h"
+	"modelCartTokomedia.h"
+	"modelOrderDetailsTokomedia.h"
+	"modelTokomediaShopAccount.h"
+	"modelTransactionTokomedia.h"
+
+1601651931 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\tokomedia\modelorderdetailstokomedia.h
+	"modelTokomediaAccount.h"
+	"modelCartTokomedia.h"
+	"modelItemlistTokomedia.h"
+	"modelTokomediaShopAccount.h"
+	"modelTransactionTokomedia.h"
+
+1601651955 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\tokomedia\modeltokomediashopaccount.h
+	"modelTokomediaAccount.h"
+	"modelCartTokomedia.h"
+	"modelItemlistTokomedia.h"
+	"modelOrderDetailsTokomedia.h"
+	"modelTransactionTokomedia.h"
+
+1601651972 c:\users\david yap\desktop\go\src\tokomedia_2.0\model\tokomedia\modeltransactiontokomedia.h
+	"modelTokomediaAccount.h"
+	"modelCartTokomedia.h"
+	"modelItemlistTokomedia.h"
+	"modelOrderDetailsTokomedia.h"
+	"modelTokomediaShopAccount.h"
 

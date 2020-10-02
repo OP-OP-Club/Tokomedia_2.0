@@ -3,10 +3,10 @@
 
 #include"serviceEmailSent.h"
 #include"serviceEmailInbox.h"
-#include"../env.h"
-#include"../config/connectDatabase.h"
-#include"../model/modelEmail.h"
-#include"../tools/hasherTools.h"
+#include"../../env.h"
+#include"../../config/connectDatabase.h"
+#include"../../model/Email/modelEmail.h"
+#include"../../tools/hasherTools.h"
 
 bool ServiceCreateEmail();
 bool ServiceUpdateEmail();
@@ -14,6 +14,7 @@ bool ServiceDeleteEmail();
 struct Email* ServiceGetEmailByID(int id);
 struct Email* ServiceGetEmailByEmail(char* email);
 struct Email* ServiceGetEmailAll();
+struct Email* GetEmailFromHeadByIndex(struct Email *head, int index);
 
 bool ServiceCreateEmail(struct NewEmail input) {
     MYSQL *conn = ConnectDatabase();
@@ -248,6 +249,22 @@ bool ServiceFreeEmailLinkedList(struct Email *head){
     }
 
     return true;
+}
+
+struct Email* GetEmailFromHeadByIndex(struct Email *head, int index){
+   MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        mysql_close(conn);
+        return head;
+    }
+
+    while(index != 0){
+        head = head->next;
+        index--;
+    }
+
+    return head;
 }
 
 #endif // SERVICE_PARAM

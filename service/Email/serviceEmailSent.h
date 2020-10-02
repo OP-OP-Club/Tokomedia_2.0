@@ -1,9 +1,9 @@
 #ifndef SERVICE_PARAM_EMAIL_SENT
 #define SERVICE_PARAM_EMAIL_SENT 1
 
-#include"../env.h"
-#include"../config/connectDatabase.h"
-#include"../model/modelEmail.h"
+#include"../../env.h"
+#include"../../config/connectDatabase.h"
+#include"../../model/Email/modelEmail.h"
 #include"serviceEmail.h"
 #include"serviceEmailInbox.h"
 
@@ -11,9 +11,10 @@ bool ServiceCreateEmailSent(struct NewEmailSent input);
 bool ServiceUpdateEmailSent(struct UpdateEmailSent input);
 bool ServiceDeleteEmailSent(int id);
 struct EmailSent* ServiceGetEmailSentByID(int id);
-//struct EmailSent* ServiceGetEmailSentByUserID(int user_id);
-//struct EmailSent* ServiceGetArchivedEmailSentByUserID(int user_id);
-//struct EmailSent* ServiceGetEmailSentAll();
+struct EmailSent* ServiceGetEmailSentByUserID(int user_id);
+struct EmailSent* ServiceGetArchivedEmailSentByUserID(int user_id);
+struct EmailSent* ServiceGetEmailSentAll();
+struct EmailSent* GetEmailFromHeadByIndex(struct EmailSent *head, int index);
 
 bool ServiceCreateEmailSent(struct NewEmailSent input) {
     MYSQL *conn = ConnectDatabase();
@@ -304,6 +305,22 @@ struct EmailSent* ServiceGetEmailSentAll(){
         mysql_close(conn);
         return head;
     }
+}
+
+struct EmailSent* GetEmailFromHeadByIndex(struct EmailSent *head, int index){
+   MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        mysql_close(conn);
+        return head;
+    }
+
+    while(index != 0){
+        head = head->next;
+        index--;
+    }
+
+    return head;
 }
 
 #endif // SERVICE_PARAM_EMAIL

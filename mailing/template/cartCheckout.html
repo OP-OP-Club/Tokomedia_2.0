@@ -1,0 +1,27 @@
+<%: func CartCheckoutTemplate(name string, date string, items []string, buffer *bytes.Buffer) %>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> Cart Checkout </title>
+        <meta charset="UTF-8">
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <h3> Tokomedia Cart Checkout </h3>
+        <p> Orderan Anda Telah dibuat dengan data data sebagai berikut</p>
+        <ul>
+            <li>Nama Pelanggan  : <%= name %></li>
+            <li>Waktu Pemesanan : <%= date %></li>
+            <li>Item            :
+                <ul>
+                    <% for _,val := range items { %>
+                        <li> <%= val %></li>
+                    <% } %>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

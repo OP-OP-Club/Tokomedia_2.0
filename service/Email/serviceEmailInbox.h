@@ -1,10 +1,10 @@
 #ifndef SERVICE_EMAIL_INBOX_PARAM
 #define SERVICE_EMAIL_INBOX_PARAM 1
 
-#include"../env.h"
-#include"../config/connectDatabase.h"
-#include"../model/modelEmail.h"
-#include"../tools/cursorTools.h"
+#include"../../env.h"
+#include"../../config/connectDatabase.h"
+#include"../../model/Email/modelEmail.h"
+#include"../../tools/cursorTools.h"
 
 #include"serviceEmail.h"
 #include"serviceEmailSent.h"
@@ -16,6 +16,7 @@ struct EmailInbox* ServiceGetEmailInboxByID(int id);
 struct EmailInbox* ServiceGetEmailInboxByUserID(int user_id);
 struct EmailInbox* ServiceGetArchivedEmailInboxByUserID(int user_id);
 struct EmailInbox* ServiceGetEmailInboxAll();
+struct EmailInbox* GetEmailFromHeadByIndex(struct EmailInbox *head, int index);
 
 bool ServiceCreateEmailInbox(struct NewEmailInbox input) {
     MYSQL *conn = ConnectDatabase();
@@ -318,6 +319,22 @@ struct EmailInbox* ServiceGetEmailInboxAll() {
         mysql_close(conn);
         return head;
     }
+}
+
+struct EmailInbox* GetEmailFromHeadByIndex(struct EmailInbox *head, int index){
+   MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        mysql_close(conn);
+        return head;
+    }
+
+    while(index != 0){
+        head = head->next;
+        index--;
+    }
+
+    return head;
 }
 
 #endif // SERVICE_EMAIL_INBOX_PARAM

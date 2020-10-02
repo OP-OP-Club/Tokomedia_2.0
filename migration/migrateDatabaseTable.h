@@ -7,11 +7,13 @@ void MigrateAllTable();
 void CreateTableEmail();
 void CreateTableEmailSent();
 void CreateTableEmailInbox();
+void CreateTableTokomediaUserAccount();
 
 void MigrateAllTable() {
     CreateTableEmail();
     CreateTableEmailSent();
     CreateTableEmailInbox();
+    CreateTableTokomediaUserAccount();
 }
 
 void CreateTableEmail() {
@@ -117,5 +119,40 @@ PRIMARY KEY(id)
     mysql_close(conn);
 }
 
+void CreateTableTokomediaUserAccount(){
+     MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        printf("Fail\n");
+        mysql_close(conn);
+        return;
+    }
+
+    const char* query =
+R"(CREATE TABLE tokomedia_user_account(
+id int NOT NULL AUTO_INCREMENT,
+name varchar(255) NOT NULL,
+email varchar(255) NOT NULL,
+password varchar(255) NOT NULL,
+balance int NOT NULL,
+security_code varchar(255) NOT NULL,
+created_at datetime NOT NULL,
+last_login datetime NOT NULL,
+PRIMARY KEY(id)
+)
+)";
+
+    int q_state = 0;
+    q_state = mysql_query(conn, query);
+
+    if(!q_state){
+        printf("Create Table tokomedia_user_account Success\n");
+    }
+    else{
+        printf("Create Table tokomedia_user_account Fail\n");
+    }
+
+    mysql_close(conn);
+}
 
 #endif // MIGRATE_DATABASE_TABLE_PARAM

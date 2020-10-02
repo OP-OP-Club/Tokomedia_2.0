@@ -10,6 +10,7 @@ class Environment{
         char* UserGetEmailTableName();
         char* UserGetEmailInboxTableName();
         char* UserGetEmailSentTableName();
+        char* UserGetTokomediaUserAccountTableName();
         char* UserGetIPAddressLive();
         char* UserGetUsernameLive();
         char* UserGetPasswordLive();
@@ -28,6 +29,7 @@ class Environment{
         char* email_table_name = "email";
         char* email_inbox_table_name = "email_inbox";
         char* email_sent_table_name = "email_sent";
+        char* tokomedia_user_account_table_name = "tokomedia_user_account";
 
         char* ip_address_live = "sql12.freesqldatabase.com";
         char* username_live = "sql12366398";
@@ -75,6 +77,10 @@ char* Environment::UserGetEmailInboxTableName() {
 
 char* Environment::UserGetEmailSentTableName() {
     return email_sent_table_name;
+}
+
+char* Environment::UserGetTokomediaUserAccountTableName() {
+    return tokomedia_user_account_table_name;
 }
 
 char* Environment::UserGetIPAddressLive() {

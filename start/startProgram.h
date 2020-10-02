@@ -4,7 +4,8 @@
 
 #include"../config/connectDatabase.h"
 #include"../migration/migrateDatabaseTable.h"
-#include"../service/serviceEmail.h"
+#include"../service/Email/serviceEmail.h"
+#include"../service/Tokomedia/serviceTokomediaAccount.h"
 #include"../tools/hasherTools.h"
 
 void StartProject(){
@@ -36,12 +37,14 @@ void StartProject(){
 
     mysql_close(conn);
 
-    struct EmailSent *head = ServiceGetEmailSentByID(2);
+//    MigrateAllTable();
 
-    while(head != NULL){
-        printf("id: %d\n%d\n%s\n%s\n%d\n%s\n%s\n", head->id, head->available, head->description, head->receiver_name, head->sender_email_id, head->sent_at, head->subject);
-        head = head->next;
-    }
+//    struct EmailSent *head = ServiceGetEmailSentByID(2);
+//
+//    while(head != NULL){
+//        printf("id: %d\n%d\n%s\n%s\n%d\n%s\n%s\n", head->id, head->available, head->description, head->receiver_name, head->sender_email_id, head->sent_at, head->subject);
+//        head = head->next;
+//    }
 
 //    struct UpdateEmailSent inbox;
 //    inbox.id = 1;
