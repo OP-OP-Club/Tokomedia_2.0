@@ -7,4 +7,32 @@
 #include"modelOrderDetailsTokomedia.h"
 #include"modelTokomediaShopAccount.h"
 
+struct TransactionTokomedia {
+    int id;
+    int status;
+    int total_price;
+    char* created_at;
+    char* updated_at;
+    int tokomedia_user_id;
+
+    struct TransactionTokomedia *next;
+};
+
+struct NewTransactionTokomedia {
+    int status;
+    int total_price;
+    char* created_at;
+    char* updated_at;
+    int tokomedia_user_id;
+};
+
+struct UpdateTransactionTokomedia {
+    int id;
+    int status;
+    int total_price;
+    char* created_at;
+    char* updated_at;
+    int tokomedia_user_id;
+};
+
 #endif // MODEL_PARAM_CART_TOKOMEDIA
