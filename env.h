@@ -7,10 +7,14 @@ class Environment{
         char* UserGetUsername();
         char* UserGetPassword();
         char* UserGetDatabaseName();
+
         char* UserGetEmailTableName();
         char* UserGetEmailInboxTableName();
         char* UserGetEmailSentTableName();
         char* UserGetTokomediaUserAccountTableName();
+        char* UserGetTokomediaShopAccountTableName();
+        char* UserGetItemlistTokomediaTableName();
+
         char* UserGetIPAddressLive();
         char* UserGetUsernameLive();
         char* UserGetPasswordLive();
@@ -26,10 +30,13 @@ class Environment{
         char* username = "root";
         char* password = "";
         char* database_name = "tokomedia_sql";
+
         char* email_table_name = "email";
         char* email_inbox_table_name = "email_inbox";
         char* email_sent_table_name = "email_sent";
         char* tokomedia_user_account_table_name = "tokomedia_user_account";
+        char* tokomedia_shop_account_table_name = "tokomedia_shop_account";
+        char* itemlist_tokomedia_table_name = "itemlist_tokomedia";
 
         char* ip_address_live = "sql12.freesqldatabase.com";
         char* username_live = "sql12366398";
@@ -81,6 +88,14 @@ char* Environment::UserGetEmailSentTableName() {
 
 char* Environment::UserGetTokomediaUserAccountTableName() {
     return tokomedia_user_account_table_name;
+}
+
+char* Environment::UserGetTokomediaShopAccountTableName(){
+    return tokomedia_shop_account_table_name;
+}
+
+char* Environment::UserGetItemlistTokomediaTableName(){
+    return itemlist_tokomedia_table_name;
 }
 
 char* Environment::UserGetIPAddressLive() {

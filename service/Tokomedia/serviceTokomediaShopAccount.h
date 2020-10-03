@@ -1,5 +1,5 @@
-#ifndef SERVICE_TOKOMEDIA_ACCOUNT_PARAM
-#define SERVICE_TOKOMEDIA_ACCOUNT_PARAM 1
+#ifndef SERVICE_TOKOMEDIA_SHOP_ACCOUNT_PARAM
+#define SERVICE_TOKOMEDIA_SHOP_ACCOUNT_PARAM 1
 
 #include"../../env.h"
 #include"../../config/connectDatabase.h"
@@ -7,19 +7,19 @@
 #include"../../model/Tokomedia/modelCartTokomedia.h"
 #include"../../tools/hasherTools.h"
 
-#include"serviceTokomediaShopAccount.h"
+#include"serviceTokomediaAccount.h"
 #include"serviceItemlistTokomedia.h"
 
-bool ServiceCreateTokomediaUserAccount(struct NewTokomediaUserAccount);
-bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount);
-bool ServiceDeleteTokomediaUserAccount(int id);
-struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByID(int id);
-struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByEmail(char* email);
-struct TokomediaUserAccount* ServiceGetTokomediaUserAccountAll();
-bool ServiceFreeTokomediaUserAccountLinkedList(struct TokomediaUserAccount *head);
-struct TokomediaUserAccount* GetTokomediaUserAccountFromHeadByIndex(struct TokomediaUserAccount *head, int index);
+bool ServiceCreateTokomediaShopAccount();
+bool ServiceUpdateTokomediaShopAccount();
+bool ServiceDeleteTokomediaShopAccount();
+struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByID(int id);
+struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByEmail(char* email);
+struct TokomediaShopAccount* ServiceGetTokomediaShopAccountAll();
+bool ServiceFreeTokomediaShopAccountLinkedList(struct TokomediaShopAccount *head);
+struct TokomediaShopAccount* GetTokomediaShopAccountFromHeadByIndex(struct TokomediaShopAccount *head, int index);
 
-bool ServiceCreateTokomediaUserAccount(struct NewTokomediaUserAccount input) {
+bool ServiceCreateTokomediaShopAccount(struct NewTokomediaShopAccount input) {
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -34,7 +34,7 @@ bool ServiceCreateTokomediaUserAccount(struct NewTokomediaUserAccount input) {
 
     char query[1000];
 
-    sprintf(query, "INSERT INTO %s (name, email, password, balance, security_code, created_at, last_login) VALUES (\'%s\', \'%s\', \'%s\', %d, \'%s\', \'%s\', \'%s\');", env.UserGetTokomediaUserAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login);
+    sprintf(query, "INSERT INTO %s (name, email, password, balance, security_code, created_at, last_login) VALUES (\'%s\', \'%s\', \'%s\', %d, \'%s\', \'%s\', \'%s\');", env.UserGetTokomediaShopAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login);
 
     const char *q = query;
 
@@ -50,7 +50,7 @@ bool ServiceCreateTokomediaUserAccount(struct NewTokomediaUserAccount input) {
     }
 }
 
-bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount input) {
+bool ServiceUpdateTokomediaShopAccount(struct UpdateTokomediaShopAccount input) {
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -65,7 +65,7 @@ bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount input) 
 
     char query[1000];
 
-    sprintf(query, "UPDATE %s SET name = \'%s\', email = \'%s\', password = \'%s\', balance = %d, security_code = \'%s\', created_at = \'%s\', last_login = \'%s\' WHERE id = %d;", env.UserGetTokomediaUserAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login, input.id);
+    sprintf(query, "UPDATE %s SET name = \'%s\', email = \'%s\', password = \'%s\', balance = %d, security_code = \'%s\', created_at = \'%s\', last_login = \'%s\' WHERE id = %d;", env.UserGetTokomediaShopAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login, input.id);
 
     const char *q = query;
 
@@ -81,7 +81,7 @@ bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount input) 
     }
 }
 
-bool ServiceDeleteTokomediaUserAccount(int id) {
+bool ServiceDeleteTokomediaShopAccount(int id) {
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -109,9 +109,9 @@ bool ServiceDeleteTokomediaUserAccount(int id) {
     }
 }
 
-struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByID(int id) {
+struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByID(int id) {
     MYSQL *conn = ConnectDatabase();
-    struct TokomediaUserAccount* temp = NULL;
+    struct TokomediaShopAccount* temp = NULL;
 
     if(!conn){
         mysql_close(conn);
@@ -122,7 +122,7 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByID(int id) {
 
     char query[1000];
 
-    sprintf(query, "SELECT * FROM %s WHERE id = %d;", env.UserGetTokomediaUserAccountTableName(), id);
+    sprintf(query, "SELECT * FROM %s WHERE id = %d;", env.UserGetTokomediaShopAccountTableName(), id);
     const char *q = query;
 
     int q_state = 0;
@@ -133,7 +133,7 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByID(int id) {
         MYSQL_ROW row;
 
         while(row = mysql_fetch_row(res)){
-            temp = (struct TokomediaUserAccount*) malloc(sizeof(struct TokomediaUserAccount));
+            temp = (struct TokomediaShopAccount*) malloc(sizeof(struct TokomediaShopAccount));
             temp->id = Atoi(row[0]);
             temp->name = row[1];
             temp->email = row[2];
@@ -154,9 +154,9 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByID(int id) {
     }
 }
 
-struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByEmail(char* email){
+struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByEmail(char* email){
     MYSQL *conn = ConnectDatabase();
-    struct TokomediaUserAccount* temp = NULL;
+    struct TokomediaShopAccount* temp = NULL;
 
     if(!conn){
         mysql_close(conn);
@@ -167,7 +167,7 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByEmail(char* email){
 
     char query[1000];
 
-    sprintf(query, "SELECT * FROM %s WHERE email = \'%s\';", env.UserGetTokomediaUserAccountTableName(), email);
+    sprintf(query, "SELECT * FROM %s WHERE email = \'%s\';", env.UserGetTokomediaShopAccountTableName(), email);
     const char *q = query;
 
     int q_state = 0;
@@ -178,7 +178,7 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByEmail(char* email){
         MYSQL_ROW row;
 
         while(row = mysql_fetch_row(res)){
-            temp = (struct TokomediaUserAccount*) malloc(sizeof(struct TokomediaUserAccount));
+            temp = (struct TokomediaShopAccount*) malloc(sizeof(struct TokomediaShopAccount));
             temp->id = Atoi(row[0]);
             temp->name = row[1];
             temp->email = row[2];
@@ -199,9 +199,9 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByEmail(char* email){
     }
 }
 
-struct TokomediaUserAccount* ServiceGetTokomediaUserAccountAll() {
+struct TokomediaShopAccount* ServiceGetTokomediaShopAccountAll() {
     MYSQL *conn = ConnectDatabase();
-    struct TokomediaUserAccount *head, *tail;
+    struct TokomediaShopAccount *head, *tail;
     head = tail = NULL;
 
     if(!conn){
@@ -213,7 +213,7 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountAll() {
 
     char query[1000];
 
-    sprintf(query, "SELECT * FROM %s;", env.UserGetTokomediaUserAccountTableName());
+    sprintf(query, "SELECT * FROM %s;", env.UserGetTokomediaShopAccountTableName());
     const char *q = query;
 
     int q_state = 0;
@@ -224,7 +224,7 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountAll() {
         MYSQL_ROW row;
 
         while(row = mysql_fetch_row(res)){
-            struct TokomediaUserAccount *temp = (struct TokomediaUserAccount*) malloc(sizeof(struct TokomediaUserAccount));
+            struct TokomediaShopAccount *temp = (struct TokomediaShopAccount*) malloc(sizeof(struct TokomediaShopAccount));
             temp->id = Atoi(row[0]);
             temp->name = row[1];
             temp->email = row[2];
@@ -253,8 +253,8 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountAll() {
     }
 }
 
-bool ServiceFreeTokomediaUserAccountLinkedList(struct TokomediaUserAccount *head){
-    struct TokomediaUserAccount* temp = head;
+bool ServiceFreeTokomediaShopAccountLinkedList(struct TokomediaShopAccount *head){
+    struct TokomediaShopAccount* temp = head;
 
     while(temp != NULL){
         head = head->next;
@@ -265,7 +265,7 @@ bool ServiceFreeTokomediaUserAccountLinkedList(struct TokomediaUserAccount *head
     return true;
 }
 
-struct TokomediaUserAccount* GetTokomediaUserAccountFromHeadByIndex(struct TokomediaUserAccount *head, int index){
+struct TokomediaShopAccount* GetTokomediaShopAccountFromHeadByIndex(struct TokomediaShopAccount *head, int index){
    MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -281,4 +281,4 @@ struct TokomediaUserAccount* GetTokomediaUserAccountFromHeadByIndex(struct Tokom
     return head;
 }
 
-#endif // SERVICE_TOKOMEDIA_ACCOUNT_PARAM
+#endif // SERVICE_TOKOMEDIA_SHOP_ACCOUNT_PARAM

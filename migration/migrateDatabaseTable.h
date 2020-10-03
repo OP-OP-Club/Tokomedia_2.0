@@ -8,12 +8,22 @@ void CreateTableEmail();
 void CreateTableEmailSent();
 void CreateTableEmailInbox();
 void CreateTableTokomediaUserAccount();
+void CreateTableTokomediaShopAccount();
+void CreateTableCartTokomedia();
+void CreateTableOrderDetailsTokomedia();
+void CreateTableTransactionTokomedia();
+void CreateTableItemlistTokomedia();
 
 void MigrateAllTable() {
     CreateTableEmail();
     CreateTableEmailSent();
     CreateTableEmailInbox();
     CreateTableTokomediaUserAccount();
+    CreateTableTokomediaShopAccount();
+    CreateTableCartTokomedia();
+    CreateTableOrderDetailsTokomedia();
+    CreateTableTransactionTokomedia();
+    CreateTableItemlistTokomedia();
 }
 
 void CreateTableEmail() {
@@ -150,6 +160,188 @@ PRIMARY KEY(id)
     }
     else{
         printf("Create Table tokomedia_user_account Fail\n");
+    }
+
+    mysql_close(conn);
+}
+
+void CreateTableTokomediaShopAccount(){
+     MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        printf("Fail\n");
+        mysql_close(conn);
+        return;
+    }
+
+    const char* query =
+R"(CREATE TABLE tokomedia_shop_account(
+id int NOT NULL AUTO_INCREMENT,
+name varchar(255) NOT NULL,
+email varchar(255) NOT NULL,
+password varchar(255) NOT NULL,
+balance int NOT NULL,
+security_code varchar(255) NOT NULL,
+created_at datetime NOT NULL,
+last_login datetime NOT NULL,
+PRIMARY KEY(id)
+)
+)";
+
+    int q_state = 0;
+    q_state = mysql_query(conn, query);
+
+    if(!q_state){
+        printf("Create Table tokomedia_shop_account Success\n");
+    }
+    else{
+        printf("Create Table tokomedia_shop_account Fail\n");
+    }
+
+    mysql_close(conn);
+}
+
+void CreateTableCartTokomedia(){
+    MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        printf("Fail\n");
+        mysql_close(conn);
+        return;
+    }
+
+    const char* query =
+R"(CREATE TABLE cart_tokomedia(
+id int NOT NULL AUTO_INCREMENT,
+item_name varchar(255) NOT NULL,
+price_per_unit int NOT NULL,
+qty int NOT NULL,
+total_price int NOT NULL,
+created_at datetime NOT NULL,
+item_list_id int NOT NULL,
+tokomedia_user_id int NOT NULL,
+tokomedia_shop_id int NOT NULL,
+PRIMARY KEY(id)
+)
+)";
+
+    int q_state = 0;
+    q_state = mysql_query(conn, query);
+
+    if(!q_state){
+        printf("Create Table cart_tokomedia Success\n");
+    }
+    else{
+        printf("Create Table cart_tokomedia Fail\n");
+    }
+
+    mysql_close(conn);
+}
+
+void CreateTableOrderDetailsTokomedia(){
+    MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        printf("Fail\n");
+        mysql_close(conn);
+        return;
+    }
+
+    const char* query =
+R"(CREATE TABLE order_details_tokomedia(
+id int NOT NULL AUTO_INCREMENT,
+item_name varchar(255) NOT NULL,
+status int NOT NULL,
+price_per_unit int NOT NULL,
+qty int NOT NULL,
+total_price int NOT NULL,
+created_at datetime NOT NULL,
+updated_at datetime NOT NULL,
+item_list_id int NOT NULL,
+tokomedia_shop_id int NOT NULL,
+transaction_id int NOT NULL,
+PRIMARY KEY(id)
+)
+)";
+
+    int q_state = 0;
+    q_state = mysql_query(conn, query);
+
+    if(!q_state){
+        printf("Create Table order_details_tokomedia Success\n");
+    }
+    else{
+        printf("Create Table order_details_tokomedia Fail\n");
+    }
+
+    mysql_close(conn);
+}
+
+void CreateTableTransactionTokomedia(){
+    MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        printf("Fail\n");
+        mysql_close(conn);
+        return;
+    }
+
+    const char* query =
+R"(CREATE TABLE transaction_tokomedia(
+id int NOT NULL AUTO_INCREMENT,
+status int NOT NULL,
+total_price int NOT NULL,
+created_at datetime NOT NULL,
+updated_at datetime NOT NULL,
+tokomedia_user_id int NOT NULL,
+PRIMARY KEY(id)
+)
+)";
+
+    int q_state = 0;
+    q_state = mysql_query(conn, query);
+
+    if(!q_state){
+        printf("Create Table transaction_tokomedia Success\n");
+    }
+    else{
+        printf("Create Table transaction_tokomedia Fail\n");
+    }
+
+    mysql_close(conn);
+}
+
+void CreateTableItemlistTokomedia(){
+    MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        printf("Fail\n");
+        mysql_close(conn);
+        return;
+    }
+
+    const char* query =
+R"(CREATE TABLE itemlist_tokomedia(
+id int NOT NULL AUTO_INCREMENT,
+item_name varchar(255) NOT NULL,
+price_per_unit int NOT NULL,
+discount_per_unit int NOT NULL,
+stock int NOT NULL,
+created_at datetime NOT NULL,
+updated_at datetime NOT NULL,
+tokomedia_shop_id int NOT NULL,
+PRIMARY KEY(id)
+)
+)";
+
+    int q_state = 0;
+    q_state = mysql_query(conn, query);
+
+    if(!q_state){
+        printf("Create Table transaction_tokomedia Success\n");
+    }
+    else{
+        printf("Create Table transaction_tokomedia Fail\n");
     }
 
     mysql_close(conn);

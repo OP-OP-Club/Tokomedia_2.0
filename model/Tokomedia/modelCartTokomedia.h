@@ -12,9 +12,11 @@ struct CartTokomedia {
     char* item_name;
     int price_per_unit;
     int qty;
+    int total_price;
     char* created_at;
     int item_list_id;
     int tokomedia_user_id;
+    int tokomedia_shop_id;
 
     struct CartTokomedia *next;
 };
@@ -23,9 +25,11 @@ struct NewCartTokomedia {
     char* item_name;
     int price_per_unit;
     int qty;
+    int total_price;
     char* created_at;
     int item_list_id;
     int tokomedia_user_id;
+    int tokomedia_shop_id;
 };
 
 struct UpdateCartTokomedia {
@@ -33,6 +37,7 @@ struct UpdateCartTokomedia {
     char* item_name;
     int price_per_unit;
     int qty;
+    int total_price;
     char* created_at;
     int item_list_id;
     int tokomedia_user_id;
