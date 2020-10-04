@@ -57,9 +57,12 @@
 		<Unit filename="service/Email/serviceEmail.h" />
 		<Unit filename="service/Email/serviceEmailInbox.h" />
 		<Unit filename="service/Email/serviceEmailSent.h" />
+		<Unit filename="service/Tokomedia/serviceCartTokomedia.h" />
 		<Unit filename="service/Tokomedia/serviceItemlistTokomedia.h" />
+		<Unit filename="service/Tokomedia/serviceOrderDetailsTokomedia.h" />
 		<Unit filename="service/Tokomedia/serviceTokomediaAccount.h" />
 		<Unit filename="service/Tokomedia/serviceTokomediaShopAccount.h" />
+		<Unit filename="service/Tokomedia/serviceTransactionTokomedia.h" />
 		<Unit filename="start/startProgram.h" />
 		<Unit filename="tools/cursorTools.h" />
 		<Unit filename="tools/descriptionConverter.h" />

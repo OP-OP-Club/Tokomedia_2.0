@@ -2,9 +2,120 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="model\Tokomedia\modelTransactionTokomedia.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="tools\sha256.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="312" topLine="0" />
+			<Cursor1 position="1271" topLine="33" />
+		</Cursor>
+	</File>
+	<File name="service\Tokomedia\serviceItemlistTokomedia.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="447" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="51" />
+			<Collapse line="79" />
+			<Collapse line="107" />
+			<Collapse line="152" />
+			<Collapse line="197" />
+			<Collapse line="251" />
+			<Collapse line="263" />
+		</Folding>
+	</File>
+	<File name="service\Tokomedia\serviceOrderDetailsTokomedia.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8376" topLine="153" />
+		</Cursor>
+		<Folding>
+			<Collapse line="24" />
+			<Collapse line="52" />
+			<Collapse line="80" />
+		</Folding>
+	</File>
+	<File name="service\Email\serviceEmailSent.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2734" topLine="16" />
+		</Cursor>
+		<Folding>
+			<Collapse line="18" />
+			<Collapse line="46" />
+			<Collapse line="74" />
+			<Collapse line="102" />
+			<Collapse line="147" />
+			<Collapse line="201" />
+			<Collapse line="255" />
+			<Collapse line="309" />
+		</Folding>
+	</File>
+	<File name="tools\timeTools.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="199" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="13" />
+			<Collapse line="29" />
+		</Folding>
+	</File>
+	<File name="service\Tokomedia\serviceCartTokomedia.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5278" topLine="73" />
+		</Cursor>
+		<Folding>
+			<Collapse line="24" />
+			<Collapse line="52" />
+			<Collapse line="80" />
+			<Collapse line="108" />
+		</Folding>
+	</File>
+	<File name="model\Tokomedia\modelTokomediaAccount.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="78" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="config\connectDatabase.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1010" topLine="16" />
+		</Cursor>
+	</File>
+	<File name="tools\cursorTools.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="209" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="migration\migrateDatabaseTable.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4967" topLine="30" />
+		</Cursor>
+		<Folding>
+			<Collapse line="16" />
+			<Collapse line="28" />
+			<Collapse line="51" />
+			<Collapse line="61" />
+			<Collapse line="85" />
+			<Collapse line="95" />
+			<Collapse line="131" />
+			<Collapse line="167" />
+			<Collapse line="240" />
+			<Collapse line="279" />
+			<Collapse line="313" />
+		</Folding>
+	</File>
+	<File name="service\Tokomedia\serviceTokomediaAccount.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="482" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="24" />
+			<Collapse line="55" />
+			<Collapse line="86" />
+			<Collapse line="114" />
+			<Collapse line="159" />
+			<Collapse line="204" />
+			<Collapse line="270" />
+		</Folding>
+	</File>
+	<File name="tools\sha256.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="195" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="service\Email\serviceEmail.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -22,95 +133,98 @@
 			<Collapse line="253" />
 		</Folding>
 	</File>
+	<File name="model\Tokomedia\modelItemlistTokomedia.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="80" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="227" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="service\Tokomedia\serviceTransactionTokomedia.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7819" topLine="183" />
+		</Cursor>
+		<Folding>
+			<Collapse line="24" />
+			<Collapse line="52" />
+			<Collapse line="80" />
+		</Folding>
+	</File>
 	<File name="env.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1346" topLine="25" />
+			<Cursor1 position="3622" topLine="50" />
 		</Cursor>
 		<Folding>
-			<Collapse line="60" />
-			<Collapse line="64" />
-			<Collapse line="68" />
-			<Collapse line="72" />
-			<Collapse line="76" />
-			<Collapse line="80" />
-			<Collapse line="84" />
-			<Collapse line="88" />
-			<Collapse line="92" />
-			<Collapse line="96" />
-			<Collapse line="100" />
-			<Collapse line="104" />
-			<Collapse line="108" />
-			<Collapse line="112" />
-			<Collapse line="116" />
-			<Collapse line="120" />
+			<Collapse line="66" />
+			<Collapse line="70" />
+			<Collapse line="74" />
+			<Collapse line="78" />
+			<Collapse line="82" />
+			<Collapse line="86" />
+			<Collapse line="90" />
+			<Collapse line="94" />
+			<Collapse line="98" />
+			<Collapse line="102" />
+			<Collapse line="106" />
+			<Collapse line="110" />
+			<Collapse line="114" />
+			<Collapse line="118" />
+			<Collapse line="122" />
+			<Collapse line="126" />
+			<Collapse line="130" />
+			<Collapse line="134" />
+			<Collapse line="138" />
 		</Folding>
 	</File>
-	<File name="service\Tokomedia\serviceTokomediaAccount.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="start\startProgram.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7212" topLine="26" />
+			<Cursor1 position="744" topLine="21" />
+		</Cursor>
+	</File>
+	<File name="tools\hasherTools.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="791" topLine="8" />
 		</Cursor>
 		<Folding>
-			<Collapse line="21" />
+			<Collapse line="13" />
 			<Collapse line="52" />
-			<Collapse line="83" />
-			<Collapse line="111" />
-			<Collapse line="156" />
-			<Collapse line="201" />
-			<Collapse line="267" />
 		</Folding>
-	</File>
-	<File name="migration\migrateDatabaseTable.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="347" topLine="3" />
-		</Cursor>
-		<Folding>
-			<Collapse line="16" />
-			<Collapse line="28" />
-			<Collapse line="51" />
-			<Collapse line="61" />
-			<Collapse line="85" />
-			<Collapse line="95" />
-			<Collapse line="131" />
-			<Collapse line="167" />
-			<Collapse line="203" />
-			<Collapse line="240" />
-			<Collapse line="279" />
-			<Collapse line="313" />
-		</Folding>
-	</File>
-	<File name="tools\sha256.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="195" topLine="0" />
-		</Cursor>
 	</File>
 	<File name="model\Tokomedia\modelCartTokomedia.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="265" topLine="0" />
+			<Cursor1 position="486" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="tools\sha256.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="tools\descriptionConverter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1271" topLine="33" />
-		</Cursor>
-	</File>
-	<File name="tools\cursorTools.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="209" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="service\Email\serviceEmailSent.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2734" topLine="16" />
+			<Cursor1 position="240" topLine="0" />
 		</Cursor>
 		<Folding>
-			<Collapse line="18" />
-			<Collapse line="46" />
-			<Collapse line="74" />
-			<Collapse line="102" />
-			<Collapse line="147" />
-			<Collapse line="201" />
-			<Collapse line="255" />
-			<Collapse line="309" />
+			<Collapse line="10" />
+			<Collapse line="50" />
+		</Folding>
+	</File>
+	<File name="model\Tokomedia\modelTransactionTokomedia.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="428" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="service\Tokomedia\serviceTokomediaShopAccount.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="444" topLine="18" />
+		</Cursor>
+		<Folding>
+			<Collapse line="24" />
+			<Collapse line="55" />
+			<Collapse line="86" />
+			<Collapse line="114" />
+			<Collapse line="159" />
+			<Collapse line="204" />
+			<Collapse line="258" />
+			<Collapse line="270" />
 		</Folding>
 	</File>
 	<File name="service\Email\serviceEmailInbox.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -128,89 +242,14 @@
 			<Collapse line="323" />
 		</Folding>
 	</File>
-	<File name="tools\timeTools.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="model\Tokomedia\modelOrderDetailsTokomedia.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="199" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="13" />
-			<Collapse line="29" />
-		</Folding>
-	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="207" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="model\Tokomedia\modelItemlistTokomedia.h" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="385" topLine="7" />
+			<Cursor1 position="1126" topLine="34" />
 		</Cursor>
 	</File>
 	<File name="model\Email\modelEmail.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="0" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="start\startProgram.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="307" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="service\Tokomedia\serviceItemlistTokomedia.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1270" topLine="7" />
-		</Cursor>
-		<Folding>
-			<Collapse line="43" />
-			<Collapse line="71" />
-			<Collapse line="99" />
-			<Collapse line="144" />
-			<Collapse line="189" />
-			<Collapse line="243" />
-			<Collapse line="255" />
-		</Folding>
-	</File>
-	<File name="model\Tokomedia\modelTokomediaAccount.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="78" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="tools\hasherTools.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="791" topLine="8" />
-		</Cursor>
-		<Folding>
-			<Collapse line="13" />
-			<Collapse line="52" />
-		</Folding>
-	</File>
-	<File name="tools\descriptionConverter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="240" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="10" />
-			<Collapse line="50" />
-		</Folding>
-	</File>
-	<File name="service\Tokomedia\serviceTokomediaShopAccount.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7442" topLine="28" />
-		</Cursor>
-		<Folding>
-			<Collapse line="21" />
-			<Collapse line="52" />
-			<Collapse line="83" />
-			<Collapse line="111" />
-			<Collapse line="156" />
-			<Collapse line="201" />
-			<Collapse line="255" />
-		</Folding>
-	</File>
-	<File name="config\connectDatabase.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1010" topLine="16" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

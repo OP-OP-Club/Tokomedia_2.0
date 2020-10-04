@@ -9,6 +9,9 @@
 
 #include"serviceTokomediaAccount.h"
 #include"serviceItemlistTokomedia.h"
+#include"serviceCartTokomedia.h"
+#include"serviceTransactionTokomedia.h"
+#include"serviceOrderDetailsTokomedia.h"
 
 bool ServiceCreateTokomediaShopAccount();
 bool ServiceUpdateTokomediaShopAccount();

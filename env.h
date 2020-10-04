@@ -14,6 +14,9 @@ class Environment{
         char* UserGetTokomediaUserAccountTableName();
         char* UserGetTokomediaShopAccountTableName();
         char* UserGetItemlistTokomediaTableName();
+        char* UserGetCartTokomediaTableName();
+        char* UserGetOrderDetailsTokomediaTableName();
+        char* UserGetTransactionTokomediaTableName();
 
         char* UserGetIPAddressLive();
         char* UserGetUsernameLive();
@@ -37,6 +40,9 @@ class Environment{
         char* tokomedia_user_account_table_name = "tokomedia_user_account";
         char* tokomedia_shop_account_table_name = "tokomedia_shop_account";
         char* itemlist_tokomedia_table_name = "itemlist_tokomedia";
+        char* itemlist_cart_table_name = "cart_tokomedia";
+        char* order_details_tokomedia_table_name = "order_details_tokomedia";
+        char* transaction_tokomedia_table_name = "transaction_tokomedia";
 
         char* ip_address_live = "sql12.freesqldatabase.com";
         char* username_live = "sql12366398";
@@ -96,6 +102,18 @@ char* Environment::UserGetTokomediaShopAccountTableName(){
 
 char* Environment::UserGetItemlistTokomediaTableName(){
     return itemlist_tokomedia_table_name;
+}
+
+char* Environment::UserGetCartTokomediaTableName(){
+    return itemlist_cart_table_name;
+}
+
+char* Environment::UserGetOrderDetailsTokomediaTableName(){
+    return order_details_tokomedia_table_name;
+}
+
+char* Environment::UserGetTransactionTokomediaTableName(){
+    return transaction_tokomedia_table_name;
 }
 
 char* Environment::UserGetIPAddressLive() {

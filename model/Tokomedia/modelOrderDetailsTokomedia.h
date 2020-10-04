@@ -25,6 +25,7 @@ struct OrderDetailsTokomedia {
 
 struct NewOrderDetailsTokomedia {
     char* item_name;
+    int status;
     int price_per_unit;
     int qty;
     int total_price;
@@ -38,6 +39,7 @@ struct NewOrderDetailsTokomedia {
 struct UpdateOrderDetailsTokomedia {
     int id;
     char* item_name;
+    int status;
     int price_per_unit;
     int qty;
     int total_price;

@@ -14,7 +14,7 @@ struct CartTokomedia {
     int qty;
     int total_price;
     char* created_at;
-    int item_list_id;
+    int itemlist_id;
     int tokomedia_user_id;
     int tokomedia_shop_id;
 
@@ -27,7 +27,7 @@ struct NewCartTokomedia {
     int qty;
     int total_price;
     char* created_at;
-    int item_list_id;
+    int itemlist_id;
     int tokomedia_user_id;
     int tokomedia_shop_id;
 };
@@ -39,8 +39,9 @@ struct UpdateCartTokomedia {
     int qty;
     int total_price;
     char* created_at;
-    int item_list_id;
+    int itemlist_id;
     int tokomedia_user_id;
+    int tokomedia_shop_id;
 };
 
 #endif // MODEL_PARAM_CART_TOKOMEDIA
