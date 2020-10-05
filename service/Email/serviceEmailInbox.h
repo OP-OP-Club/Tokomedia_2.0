@@ -12,11 +12,12 @@
 bool ServiceCreateEmailInbox(struct NewEmailInbox input);
 bool ServiceUpdateEmailInbox(struct UpdateEmailInbox input);
 bool ServiceDeleteEmailInbox(int id);
+int ServiceGetEmailInboxSize(struct EmailInbox *head);
 struct EmailInbox* ServiceGetEmailInboxByID(int id);
 struct EmailInbox* ServiceGetEmailInboxByUserID(int user_id);
 struct EmailInbox* ServiceGetArchivedEmailInboxByUserID(int user_id);
 struct EmailInbox* ServiceGetEmailInboxAll();
-struct EmailInbox* GetEmailFromHeadByIndex(struct EmailInbox *head, int index);
+struct EmailInbox* ServiceGetEmailInboxFromHeadByIndex(struct EmailInbox *head, int index);
 
 bool ServiceCreateEmailInbox(struct NewEmailInbox input) {
     MYSQL *conn = ConnectDatabase();
@@ -65,8 +66,6 @@ bool ServiceUpdateEmailInbox(struct UpdateEmailInbox input) {
 
     const char *q = query;
 
-    printf("%s\n", query);
-
     int q_state = 0;
     q_state = mysql_query(conn, q);
 
@@ -108,6 +107,17 @@ bool ServiceDeleteEmailInbox(int id) {
     else{
         return false;
     }
+}
+
+int ServiceGetEmailInboxSize(struct EmailInbox *head){
+    int counter = 0;
+
+    while(head != NULL){
+        counter++;
+        head = head->next;
+    }
+
+    return counter;
 }
 
 struct EmailInbox* ServiceGetEmailInboxByID(int id) {
@@ -321,7 +331,7 @@ struct EmailInbox* ServiceGetEmailInboxAll() {
     }
 }
 
-struct EmailInbox* GetEmailFromHeadByIndex(struct EmailInbox *head, int index){
+struct EmailInbox* ServiceGetEmailInboxFromHeadByIndex(struct EmailInbox *head, int index){
    MYSQL *conn = ConnectDatabase();
 
     if(!conn){

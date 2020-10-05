@@ -7,8 +7,11 @@
 #include"../service/Email/serviceEmail.h"
 #include"../service/Tokomedia/serviceTransactionTokomedia.h"
 #include"../tools/hasherTools.h"
+#include"../display/displayEmail.h"
 
 void StartProject(){
+
+    srand(time(NULL));
 
 //    Environment env;
 //
@@ -36,6 +39,31 @@ void StartProject(){
     }
 
     mysql_close(conn);
+
+    EmailMainMenu();
+
+
+//    char arr[500] = "test";
+//
+//    char *temp = arr;
+//
+//    char result[500];
+//    strcpy(result, temp);
+//
+//    temp = "asodks";
+//
+//    char *akhir = result;
+//
+//    result[0] = 'F';
+//    result[1] = 'U';
+//    result[2] = 'C';
+//    result[3] = 'K';
+//    result[4] = '\0';
+//
+//    printf("%s\n", temp);
+//    printf("%s\n", result);
+//    printf("%s\n", akhir);
+
 
 //    MigrateAllTable();
 

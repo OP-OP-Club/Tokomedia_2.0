@@ -24,7 +24,7 @@ char* GetTimeNow(){
 //    string temp = to_string(ltm->tm_year + 1900) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + " " + to_string(ltm->tm_hour) + ":" + to_string(ltm->tm_min) + ":" + to_string(ltm->tm_sec);
 
     char *time_now = temp_time;
-    return time_now ;
+    return strdup(time_now);
 }
 
 char* GetTimeZero(){

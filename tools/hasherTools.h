@@ -62,7 +62,7 @@ char* ToLower(char* word) {
     }
 
     char *return_word = temp_string;
-    return return_word;
+    return strdup(return_word);
 }
 
 #endif // TOOLS_PARAM

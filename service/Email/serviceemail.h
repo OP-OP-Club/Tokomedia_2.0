@@ -8,15 +8,16 @@
 #include"../../model/Email/modelEmail.h"
 #include"../../tools/hasherTools.h"
 
-bool ServiceCreateEmail();
-bool ServiceUpdateEmail();
-bool ServiceDeleteEmail();
+bool ServiceCreateEmail(struct NewEmail input);
+bool ServiceUpdateEmail(struct UpdateEmail input);
+bool ServiceDeleteEmail(int id);
 struct Email* ServiceGetEmailByID(int id);
 struct Email* ServiceGetEmailByEmail(char* email);
 struct Email* ServiceGetEmailAll();
-struct Email* GetEmailFromHeadByIndex(struct Email *head, int index);
+struct Email* ServiceGetEmailFromHeadByIndex(struct Email *head, int index);
 
 bool ServiceCreateEmail(struct NewEmail input) {
+
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -251,7 +252,7 @@ bool ServiceFreeEmailLinkedList(struct Email *head){
     return true;
 }
 
-struct Email* GetEmailFromHeadByIndex(struct Email *head, int index){
+struct Email* ServiceGetEmailFromHeadByIndex(struct Email *head, int index){
    MYSQL *conn = ConnectDatabase();
 
     if(!conn){

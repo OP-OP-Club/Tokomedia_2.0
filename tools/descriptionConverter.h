@@ -45,7 +45,7 @@ char* descriptionConvert(char* desc, int max_len){
     converted_description[index] = '\0';
     char *final_convert_desc = converted_description;
 
-    return final_convert_desc;
+    return strdup(final_convert_desc);
 }
 
 int Atoi(char* num){

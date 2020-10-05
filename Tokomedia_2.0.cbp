@@ -42,6 +42,7 @@
 			<Add library="../../../../../../../Program Files (x86)/Dev-Cpp/MinGW64/lib/libmysql.a" />
 		</Linker>
 		<Unit filename="config/connectDatabase.h" />
+		<Unit filename="display/displayEmail.h" />
 		<Unit filename="env.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="migration/migrateDatabaseTable.h" />

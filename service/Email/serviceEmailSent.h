@@ -10,11 +10,12 @@
 bool ServiceCreateEmailSent(struct NewEmailSent input);
 bool ServiceUpdateEmailSent(struct UpdateEmailSent input);
 bool ServiceDeleteEmailSent(int id);
+int ServiceGetEmailSentSize(struct EmailSent *head);
 struct EmailSent* ServiceGetEmailSentByID(int id);
 struct EmailSent* ServiceGetEmailSentByUserID(int user_id);
 struct EmailSent* ServiceGetArchivedEmailSentByUserID(int user_id);
 struct EmailSent* ServiceGetEmailSentAll();
-struct EmailSent* GetEmailFromHeadByIndex(struct EmailSent *head, int index);
+struct EmailSent* ServiceGetEmailSentFromHeadByIndex(struct EmailSent *head, int index);
 
 bool ServiceCreateEmailSent(struct NewEmailSent input) {
     MYSQL *conn = ConnectDatabase();
@@ -98,6 +99,17 @@ bool ServiceDeleteEmailSent(int id) {
     else{
         return false;
     }
+}
+
+int ServiceGetEmailSentSize(struct EmailSent *head){
+    int counter = 0;
+
+    while(head != NULL){
+        counter++;
+        head = head->next;
+    }
+
+    return counter;
 }
 
 struct EmailSent* ServiceGetEmailSentByID(int id){
@@ -307,7 +319,7 @@ struct EmailSent* ServiceGetEmailSentAll(){
     }
 }
 
-struct EmailSent* GetEmailFromHeadByIndex(struct EmailSent *head, int index){
+struct EmailSent* ServiceGetEmailSentFromHeadByIndex(struct EmailSent *head, int index){
    MYSQL *conn = ConnectDatabase();
 
     if(!conn){

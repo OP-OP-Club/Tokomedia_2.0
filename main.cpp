@@ -5,6 +5,7 @@
 #include<time.h>
 #include<math.h>
 #include<stdlib.h>
+#include<conio.h>
 
 #include"start/startProgram.h"
 
