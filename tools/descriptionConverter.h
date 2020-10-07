@@ -4,6 +4,7 @@
 #include "cursorTools.h"
 #include "timeTools.h"
 #include "hasherTools.h"
+#include "generator.h"
 
 char* descriptionConvert(char* desc, int max_len);
 int Atoi(char* num);

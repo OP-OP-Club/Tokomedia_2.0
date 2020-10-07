@@ -4,8 +4,7 @@
 #include "hasherTools.h"
 #include "timeTools.h"
 #include "descriptionConverter.h"
-
-using namespace std;
+#include "generator.h"
 
 void SetCursorPosition(int x, int y);
 void SetCursorVisible(bool flag);

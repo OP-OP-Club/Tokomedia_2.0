@@ -3,6 +3,8 @@
 
 #include "../tools/cursorTools.h"
 
+#include"displayTokomedia.h"
+
 #define STAGE4 219
 #define STAGE3 178
 #define STAGE2 177
@@ -34,10 +36,10 @@ void EmailSentArchive();
 void EmailWriteMail();
 
 // Misc
-void PrintHeader();
+void PrintGmailHeader();
 
 // Global Variable
-struct Email *login_now = NULL;
+struct Email *email_login_now = NULL;
 int inbox_dashboard_page_now = 1;
 int archived_email_inbox_page_now = 1;
 int sent_dashboard_page_now = 1;
@@ -83,8 +85,8 @@ void EmailMainMenu(){
     gmailSymbol[13][37] = ' ';
     gmailSymbol[13][38] = ' ';
 
-    #ifndef ONLY_ONCE
-    #define ONLY_ONCE
+    #ifndef ONLY_ONCE_GMAIL_SYMBOL
+    #define ONLY_ONCE_GMAIL_SYMBOL
         int len_x = strlen(gmailSymbol[0]);
 
         for(int i = 0; i < 15; i++){
@@ -115,7 +117,7 @@ void EmailMainMenu(){
     while(1){
 
         SetCursorPosition(0,7);
-            printf("%s", GetTimeNow());
+        printf("%s", GetTimeNow());
 
         if(kbhit()){
             char c = getch();
@@ -174,7 +176,7 @@ void EmailMainMenu(){
 }
 
 void EmailLoginMenu() {
-    PrintHeader();
+    PrintGmailHeader();
 
     char temp[255];
     int index = 0;
@@ -224,7 +226,7 @@ void EmailLoginMenu() {
 
                     while(head != NULL){
                         if(strcasecmp(s, head->email) == 0){
-                            login_now = head;
+                            email_login_now = head;
                             flag = 0;
                             break;
                         }
@@ -262,7 +264,7 @@ void EmailLoginMenu() {
 
                     char *s = temp;
 
-                    if(HasherCompare(s, login_now->password)){
+                    if(HasherCompare(s, email_login_now->password)){
                         break;
                     }
                     else{
@@ -344,11 +346,11 @@ void EmailLoginMenu() {
 
         if(kbhit()){
             struct UpdateEmail update_email;
-            update_email.id = login_now->id;
-            update_email.name = login_now->name;
-            update_email.password = login_now->password;
-            update_email.email = login_now->email;
-            update_email.created_at = login_now->created_at;
+            update_email.id = email_login_now->id;
+            update_email.name = email_login_now->name;
+            update_email.password = email_login_now->password;
+            update_email.email = email_login_now->email;
+            update_email.created_at = email_login_now->created_at;
             update_email.last_login = GetTimeNow();
 
             ServiceUpdateEmail(update_email);
@@ -361,7 +363,7 @@ void EmailLoginMenu() {
 }
 
 void EmailRegisterMenu(){
-    PrintHeader();
+    PrintGmailHeader();
 
     struct NewEmail new_email;
     char temp[255];
@@ -531,13 +533,13 @@ void EmailRegisterMenu(){
 }
 
 void EmailInboxDashboard() {
-    PrintHeader();
+    PrintGmailHeader();
 
     SetCursorPosition(0,8);
-    printf("Welcome, %s\n", login_now->name);
+    printf("Welcome, %s\n", email_login_now->name);
     for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
 
-    struct EmailInbox *email_inbox_head = ServiceGetEmailInboxByUserID(login_now->id);
+    struct EmailInbox *email_inbox_head = ServiceGetEmailInboxByUserID(email_login_now->id);
 
     int size_email_inbox = ServiceGetEmailInboxSize(email_inbox_head);
 
@@ -756,7 +758,7 @@ void EmailInboxDashboard() {
 }
 
 void EmailInboxDescription(struct EmailInbox *input) {
-    PrintHeader();
+    PrintGmailHeader();
 
     struct UpdateEmailInbox update_email_inbox;
     update_email_inbox.id = input->id;
@@ -796,9 +798,9 @@ void EmailInboxDescription(struct EmailInbox *input) {
 }
 
 void EmailInboxArchive() {
-    PrintHeader();
+    PrintGmailHeader();
 
-    struct EmailInbox *archived_email = ServiceGetArchivedEmailInboxByUserID(login_now->id);
+    struct EmailInbox *archived_email = ServiceGetArchivedEmailInboxByUserID(email_login_now->id);
 
     int archived_count = ServiceGetEmailInboxSize(archived_email);
 
@@ -869,7 +871,7 @@ void EmailInboxArchive() {
     SetCursorPosition(0, inbox_y + 1);
     for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
     SetCursorPosition(27, inbox_y + 2);
-    cout << archived_email_inbox_page_now << "/" << max_pagination_page;
+    printf("%d/%d", archived_email_inbox_page_now, max_pagination_page);
 
     int selected_archived_email;
     int range_min, range_max;
@@ -979,9 +981,9 @@ void EmailInboxArchive() {
 }
 
 void EmailSentDashboard() {
-    PrintHeader();
+    PrintGmailHeader();
 
-    struct EmailSent* email_sent = ServiceGetEmailSentByUserID(login_now->id);
+    struct EmailSent* email_sent = ServiceGetEmailSentByUserID(email_login_now->id);
 
     int email_sent_counter = ServiceGetEmailSentSize(email_sent);
 
@@ -1169,11 +1171,11 @@ void EmailSentDashboard() {
 }
 
 void EmailSentDescription(struct EmailSent *input){
-    PrintHeader();
+    PrintGmailHeader();
 
     SetCursorPosition(0,8);
     printf("Receiver : %s at %s\n", input->receiver_name, input->sent_at);
-    for(int i = 0; i < 100; i++) cout << char(HORIZON_LINE);
+    for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
     printf("\nSubject : %s\n\n", input->subject);
     printf("%s\n", descriptionConvert(input->description,99));
     for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
@@ -1198,13 +1200,12 @@ void EmailSentDescription(struct EmailSent *input){
 }
 
 void EmailSentArchive() {
-    PrintHeader();
+    PrintGmailHeader();
 
-    struct EmailSent *email_sent_archive = ServiceGetArchivedEmailSentByUserID(login_now->id);
+    struct EmailSent *email_sent_archive = ServiceGetArchivedEmailSentByUserID(email_login_now->id);
     int email_archived_counter = ServiceGetEmailSentSize(email_sent_archive);
 
     SetCursorPosition(0,8);
-    cout << "You Have " << email_archived_counter << " Archived Email(s)\n";
     printf("You Have %d Archived Email(s)\n", email_archived_counter);
     for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
 
@@ -1385,7 +1386,7 @@ void EmailSentArchive() {
 }
 
 void EmailWriteMail(){
-    PrintHeader();
+    PrintGmailHeader();
 
 
     char temp[255];
@@ -1439,11 +1440,11 @@ void EmailWriteMail(){
                     int flag = 1;
                     while(AllEmail != NULL){
                         if(strcasecmp(AllEmail->email, email_list) == 0){
-                            emails_sent.sender_email_id = login_now->id;
+                            emails_sent.sender_email_id = email_login_now->id;
                             emails_sent.available = 1;
                             emails_sent.receiver_name = AllEmail->name;
 
-                            emails_inbox.sender_name = login_now->name;
+                            emails_inbox.sender_name = email_login_now->name;
                             emails_inbox.receiver_email_id = AllEmail->id;
                             emails_inbox.available = 1;
                             emails_inbox.read_status = 2;
@@ -1563,7 +1564,7 @@ void EmailWriteMail(){
 
 }
 
-void PrintHeader(){
+void PrintGmailHeader(){
     system("@cls||clear");
 
     for(int i = 0; i < 7; i++){

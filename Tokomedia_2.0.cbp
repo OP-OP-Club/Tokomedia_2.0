@@ -43,6 +43,7 @@
 		</Linker>
 		<Unit filename="config/connectDatabase.h" />
 		<Unit filename="display/displayEmail.h" />
+		<Unit filename="display/displayTokomedia.h" />
 		<Unit filename="env.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="migration/migrateDatabaseTable.h" />
@@ -67,6 +68,7 @@
 		<Unit filename="start/startProgram.h" />
 		<Unit filename="tools/cursorTools.h" />
 		<Unit filename="tools/descriptionConverter.h" />
+		<Unit filename="tools/generator.h" />
 		<Unit filename="tools/hasherTools.h" />
 		<Unit filename="tools/sha256.cpp" />
 		<Unit filename="tools/sha256.h" />

@@ -29,19 +29,22 @@ void StartProject(){
 //    getchar();
 //    getchar();
 
-    MYSQL *conn = ConnectDatabase();
+//    MYSQL *conn = ConnectDatabase();
+//
+//    if(conn){
+//        printf("Success\n");
+//    }
+//    else{
+//        printf("Fail\n");
+//    }
+//
+//    mysql_close(conn);
 
-    if(conn){
-        printf("Success\n");
-    }
-    else{
-        printf("Fail\n");
-    }
+//    MigrateAllTable();
 
-    mysql_close(conn);
+//    EmailMainMenu();
 
-    EmailMainMenu();
-
+    TokomediaMainMenu();
 
 //    char arr[500] = "test";
 //

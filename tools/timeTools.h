@@ -7,6 +7,7 @@
 #include "hasherTools.h"
 #include "descriptionConverter.h"
 #include "cursorTools.h"
+#include "generator.h"
 
 char* GetTimeNow();
 char* GetTimeZero();

@@ -338,10 +338,10 @@ PRIMARY KEY(id)
     q_state = mysql_query(conn, query);
 
     if(!q_state){
-        printf("Create Table transaction_tokomedia Success\n");
+        printf("Create Table itemlist_tokomedia Success\n");
     }
     else{
-        printf("Create Table transaction_tokomedia Fail\n");
+        printf("Create Table itemlist_tokomedia Fail\n");
     }
 
     mysql_close(conn);

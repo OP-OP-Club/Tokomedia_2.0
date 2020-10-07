@@ -6,6 +6,7 @@
 #include "cursorTools.h"
 #include "timeTools.h"
 #include "descriptionConverter.h"
+#include "generator.h"
 
 char* sha256Hashing(char* word);
 bool HasherCompare(char* pass, char* hashedPassword);
