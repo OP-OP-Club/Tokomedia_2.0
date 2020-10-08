@@ -16,11 +16,12 @@
 bool ServiceCreateCartTokomedia(struct NewCartTokomedia input);
 bool ServiceUpdateCartTokomedia(struct UpdateCartTokomedia input);
 bool ServiceDeleteCartTokomedia(int id);
+int ServiceGetCartTokomediaSize(struct CartTokomedia *head);
 struct CartTokomedia* ServiceGetCartTokomediaByID(int id);
 struct CartTokomedia* ServiceGetCartTokomediaByTokomediaUserID(int id);
 //struct CartTokomedia* ServiceGetCartTokomediaAll();
 bool ServiceFreeCartTokomediaLinkedList(struct CartTokomedia *head);
-struct CartTokomedia* GetCartTokomediaFromHeadByIndex(struct CartTokomedia *head, int index);
+struct CartTokomedia* ServiceGetCartTokomediaFromHeadByIndex(struct CartTokomedia *head, int index);
 
 bool ServiceCreateCartTokomedia(struct NewCartTokomedia input){
     MYSQL *conn = ConnectDatabase();
@@ -104,6 +105,17 @@ bool ServiceDeleteCartTokomedia(int id){
     else{
         return false;
     }
+}
+
+int ServiceGetCartTokomediaSize(struct CartTokomedia *head){
+    int counter = 0;
+
+    while(head != NULL){
+        counter++;
+        head = head->next;
+    }
+
+    return counter;
 }
 
 struct CartTokomedia* ServiceGetCartTokomediaByID(int id){
@@ -193,7 +205,7 @@ struct CartTokomedia* ServiceGetCartTokomediaByTokomediaUserID(int id){
             if(UpdatedItemList == NULL){
 
             }
-            else(UpdatedItemList->price_per_unit - UpdatedItemList->discount_per_unit != temp->price_per_unit){
+            else if((UpdatedItemList->price_per_unit - UpdatedItemList->discount_per_unit) != temp->price_per_unit){
                 int new_price_per_unit = UpdatedItemList->price_per_unit - UpdatedItemList->discount_per_unit;
                 struct UpdateCartTokomedia tempUpdate;
                 tempUpdate.id = temp->id;
@@ -295,7 +307,7 @@ bool ServiceFreeCartTokomediaLinkedList(struct CartTokomedia *head){
     return true;
 }
 
-struct CartTokomedia* GetCartTokomediaFromHeadByIndex(struct CartTokomedia *head, int index){
+struct CartTokomedia* ServiceGetCartTokomediaFromHeadByIndex(struct CartTokomedia *head, int index){
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){

@@ -7,6 +7,7 @@
 #include "timeTools.h"
 #include "descriptionConverter.h"
 #include "generator.h"
+#include<string>
 
 char* sha256Hashing(char* word);
 bool HasherCompare(char* pass, char* hashedPassword);
@@ -26,7 +27,7 @@ char* sha256Hashing(char* word){
 
     char *before_hashed = temp_string;
 
-    return sha256(before_hashed);
+    return strdup(sha256(before_hashed).c_str());
 }
 
 bool HasherCompare(char* pass, char* hashedPassword){
@@ -35,12 +36,12 @@ bool HasherCompare(char* pass, char* hashedPassword){
     Environment env;
 
     bool flag = false;
-    for(int i = 0; i < 52; i++){
+    for(int i = 0; i < 53; i++){
         char temp_pass[500];
         sprintf(temp_pass, "%c%s%s", arr[i], pass, env.UserGetSalt());
-        char *before_hashed = temp_pass;
+        std::string s(temp_pass);
 
-        char* temp = sha256(before_hashed);
+        char* temp = strdup(sha256(s).c_str());
 
         if(strcmp(temp, hashedPassword) == 0){
             flag = true;

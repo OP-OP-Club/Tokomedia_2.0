@@ -5,7 +5,6 @@
 //
 
 #include "sha256.h"
-#include<string.h>
 
 // big endian architectures need #define __BYTE_ORDER __BIG_ENDIAN
 //#ifndef _MSC_VER
@@ -404,24 +403,9 @@ std::string SHA256::operator()(const void* data, size_t numBytes)
 
 
 /// compute SHA256 of a string, excluding final zero
-char* SHA256::operator()(char* input)
+std::string SHA256::operator()(const std::string& text)
 {
-  const std::string& text = std::string(input);
   reset();
   add(text.c_str(), text.size());
-
-  std::string temp = getHash();
-
-  char temp_array[65];
-
-  int i = 0;
-  for(int a = 0; a < 64; a++){
-    temp_array[i] = temp[a];
-    i++;
-  }
-  temp_array[64] = '\0';
-
-  char *kembali = temp_array;
-
-  return kembali;
+  return getHash();
 }

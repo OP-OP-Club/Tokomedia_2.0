@@ -58,7 +58,7 @@ int Atoi(char* num){
 
     int temp_len = strlen(temp);
     for(int i = temp_len - 1; i >= 0; i--){
-        id = (temp[i] - '0') * expo;
+        id += (temp[i] - '0') * expo;
         expo *= 10;
     }
 

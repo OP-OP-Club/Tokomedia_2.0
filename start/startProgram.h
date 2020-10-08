@@ -4,8 +4,8 @@
 
 #include"../config/connectDatabase.h"
 #include"../migration/migrateDatabaseTable.h"
+#include"../service/Tokomedia/serviceCartTokomedia.h"
 #include"../service/Email/serviceEmail.h"
-#include"../service/Tokomedia/serviceTransactionTokomedia.h"
 #include"../tools/hasherTools.h"
 #include"../display/displayEmail.h"
 
@@ -43,6 +43,15 @@ void StartProject(){
 //    MigrateAllTable();
 
 //    EmailMainMenu();
+//
+//    printf("%s\n", sha256Hashing("123"));
+//
+//    getchar();
+//    if(HasherCompare("123", "41eba433ed5578e976a574d120cfabfd4bdaf799012953f1ea10c69b4020b2e8")){
+//        printf("yes");
+//    }
+//    getchar();
+//    getchar();
 
     TokomediaMainMenu();
 
