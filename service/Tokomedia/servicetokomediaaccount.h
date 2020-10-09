@@ -64,6 +64,8 @@ bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount input) 
     Environment env;
     input.email = ToLower(input.email);
 
+    input.password = sha256Hashing(input.password);
+
     char query[1000];
 
     sprintf(query, "UPDATE %s SET name = \'%s\', email = \'%s\', password = \'%s\', balance = %d, security_code = \'%s\', created_at = \'%s\', last_login = \'%s\' WHERE id = %d;", env.UserGetTokomediaUserAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login, input.id);

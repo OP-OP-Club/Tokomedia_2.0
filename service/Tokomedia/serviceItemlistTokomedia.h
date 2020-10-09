@@ -35,7 +35,7 @@ bool ServiceCreateItemlistTokomedia(struct NewItemlistTokomedia input){
 
     char query[1000];
 
-    sprintf(query, "INSERT INTO %s (item_name, price_per_unit, discount, stock, created_at, updated_at, tokomedia_shop_id) VALUES (\'%s\', %d, %d, %d, \'%s\', \'%s\', %d);", env.UserGetItemlistTokomediaTableName(), input.item_name, input.price_per_unit, input.discount_per_unit, input.stock, input.created_at, input.updated_at, input.tokomedia_shop_id);
+    sprintf(query, "INSERT INTO %s (item_name, price_per_unit, discount_per_unit, stock, created_at, updated_at, tokomedia_shop_id) VALUES (\'%s\', %d, %d, %d, \'%s\', \'%s\', %d);", env.UserGetItemlistTokomediaTableName(), input.item_name, input.price_per_unit, input.discount_per_unit, input.stock, input.created_at, input.updated_at, input.tokomedia_shop_id);
 
     const char *q = query;
 
@@ -63,7 +63,7 @@ bool ServiceUpdateItemlistTokomedia(struct UpdateItemlistTokomedia input) {
 
     char query[1000];
 
-    sprintf(query, "UPDATE %s SET item_name = \'%s\', price_per_unit = %d, discount = %d, stock = %d, created_at = \'%s\', updated_at = \'%s\', tokomedia_shop_id = %d WHERE id = %d;", env.UserGetItemlistTokomediaTableName(), input.item_name, input.price_per_unit, input.discount_per_unit, input.stock, input.created_at, input.updated_at, input.tokomedia_shop_id, input.id);
+    sprintf(query, "UPDATE %s SET item_name = \'%s\', price_per_unit = %d, discount_per_unit = %d, stock = %d, created_at = \'%s\', updated_at = \'%s\', tokomedia_shop_id = %d WHERE id = %d;", env.UserGetItemlistTokomediaTableName(), input.item_name, input.price_per_unit, input.discount_per_unit, input.stock, input.created_at, input.updated_at, input.tokomedia_shop_id, input.id);
 
     const char *q = query;
 
@@ -368,6 +368,6 @@ struct ItemlistTokomedia* ServiceGetItemlistTokomediaPagination(int limit, int p
         mysql_close(conn);
         return head;
     }
-};
+}
 
 #endif // SERVICE_PARAM_ITEMLIST_TOKOMEDIA

@@ -28,6 +28,8 @@ void TokomediaUserMainMenu();
 void TokomediaUserLoginMenu();
 void TokomediaUserRegisterMenu();
 void TokomediaUserDashboard();
+void TokomediaUserCart();
+void TokomediaUserTransactionPage();
 
 void PrintTokomediaHeader();
 
@@ -277,6 +279,8 @@ void TokomediaUserLoginMenu() {
         printf(":");
     }
 
+    char *save_pass;
+
      while(1){
         SetCursorVisible(false);
         SetCursorPosition(0,7);
@@ -352,6 +356,7 @@ void TokomediaUserLoginMenu() {
                     char *s = temp;
 
                     if(HasherCompare(s, tokomedia_user_login_now->password)){
+                        save_pass = strdup(s);
                         break;
                     }
                     else{
@@ -435,7 +440,7 @@ void TokomediaUserLoginMenu() {
             struct UpdateTokomediaUserAccount update_user;
             update_user.id = tokomedia_user_login_now->id;
             update_user.name = tokomedia_user_login_now->name;
-            update_user.password = tokomedia_user_login_now->password;
+            update_user.password = save_pass;
             update_user.email = tokomedia_user_login_now->email;
             update_user.created_at = tokomedia_user_login_now->created_at;
             update_user.last_login = GetTimeNow();
@@ -443,7 +448,6 @@ void TokomediaUserLoginMenu() {
             update_user.security_code = tokomedia_user_login_now->security_code;
 
             ServiceUpdateTokomediaUserAccount(update_user);
-            getchar();
 
             TokomediaUserDashboard();
             break;
@@ -660,7 +664,9 @@ void TokomediaUserDashboard(){
 
     struct ItemlistTokomedia *itemlist_tokomedia_head = ServiceGetItemlistTokomediaAll();
 
-    int size_itemlist_tokomedia = ServiceGetItemlistTokomediaSize(itemlist_tokomedia_head);
+    int size_cart_tokomedia = ServiceGetItemlistTokomediaSize(itemlist_tokomedia_head);
+
+    ServiceFreeItemlistTokomediaLinkedList(itemlist_tokomedia_head);
 
     struct CartTokomedia *cart_tokomedia_user_head = ServiceGetCartTokomediaByTokomediaUserID(tokomedia_user_login_now->id);
 
@@ -677,25 +683,27 @@ void TokomediaUserDashboard(){
     printf("%s", email_count_text);
 
     int max_pagination_page;
-    if(size_itemlist_tokomedia % 15 == 0){
-        max_pagination_page = size_itemlist_tokomedia / 15;
+    if(size_cart_tokomedia % 15 == 0){
+        max_pagination_page = size_cart_tokomedia / 15;
     }
     else{
-        max_pagination_page = size_itemlist_tokomedia / 15 + 1;
+        max_pagination_page = size_cart_tokomedia / 15 + 1;
     }
 
     SetCursorPosition(8,10);
     printf("Item Name");
     SetCursorPosition(28,10);
     printf("Price");
+    SetCursorPosition(50,10);
+    printf("Stock");
     SetCursorPosition(80,10);
     printf("Shop");
 
     SetCursorPosition(0, 11);
     for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
 
-    int itemlist_tokomedia_y = 12;
-    int temp_y = itemlist_tokomedia_y;
+    int cart_tokomedia_y = 12;
+    int temp_y = cart_tokomedia_y;
 
     int item_counter_on_page;
     if(max_pagination_page == 0){
@@ -705,16 +713,16 @@ void TokomediaUserDashboard(){
         item_counter_on_page = 15;
     }
     else{
-        item_counter_on_page = size_itemlist_tokomedia - (tokomedia_user_itemlist_page_now - 1) * 15;
+        item_counter_on_page = size_cart_tokomedia - (tokomedia_user_itemlist_page_now - 1) * 15;
     }
 
-    struct ItemlistTokomedia *itemlist_tokomedia_pagination = ServiceGetItemlistTokomediaPagination(15, tokomedia_user_itemlist_page_now, tokomedia_user_itemlist_order_by);
-    struct ItemlistTokomedia *head_dummy = itemlist_tokomedia_pagination;
+    struct ItemlistTokomedia *cart_tokomedia_pagination = ServiceGetItemlistTokomediaPagination(15, tokomedia_user_itemlist_page_now, tokomedia_user_itemlist_order_by);
+    struct ItemlistTokomedia *head_dummy = cart_tokomedia_pagination;
 
     while(head_dummy != NULL){
-        SetCursorPosition(5,itemlist_tokomedia_y);
+        SetCursorPosition(5,cart_tokomedia_y);
 
-        SetCursorPosition(8,itemlist_tokomedia_y);
+        SetCursorPosition(8,cart_tokomedia_y);
         if(strlen(head_dummy->item_name) > 22){
             for(int i = 0; i < 22; i++){
                 printf("%c", head_dummy->item_name[i]);
@@ -723,9 +731,11 @@ void TokomediaUserDashboard(){
         else{
                 printf("%s", head_dummy->item_name);
         }
-        SetCursorPosition(28,itemlist_tokomedia_y);
+        SetCursorPosition(28, cart_tokomedia_y);
         printf("%d", head_dummy->price_per_unit);
-        SetCursorPosition(80,itemlist_tokomedia_y);
+        SetCursorPosition(50, cart_tokomedia_y);
+        printf("%d", head_dummy->stock);
+        SetCursorPosition(80, cart_tokomedia_y);
 
         struct TokomediaShopAccount *shop_acc = ServiceGetTokomediaShopAccountByID(head_dummy->tokomedia_shop_id);
 
@@ -734,23 +744,23 @@ void TokomediaUserDashboard(){
         ServiceFreeTokomediaShopAccountLinkedList(shop_acc);
 
         head_dummy = head_dummy->next;
-        itemlist_tokomedia_y++;
+        cart_tokomedia_y++;
     }
 
-    SetCursorPosition(0, itemlist_tokomedia_y + 1);
+    SetCursorPosition(0, cart_tokomedia_y + 1);
     for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
-    SetCursorPosition(27, itemlist_tokomedia_y + 2);
+    SetCursorPosition(27, cart_tokomedia_y + 2);
     printf("%d/%d", tokomedia_user_itemlist_page_now, max_pagination_page);
 
-    int selected_itemlist_tokomedia;
+    int selected_cart_tokomedia;
     int range_min, range_max;
     int flag = 0;
 
-    head_dummy = itemlist_tokomedia_pagination;
-    size_itemlist_tokomedia = ServiceGetItemlistTokomediaSize(head_dummy);
+    head_dummy = cart_tokomedia_pagination;
+    size_cart_tokomedia = ServiceGetItemlistTokomediaSize(head_dummy);
 
-    if(size_itemlist_tokomedia > 0){
-        selected_itemlist_tokomedia = 1;
+    if(size_cart_tokomedia > 0){
+        selected_cart_tokomedia = 1;
         SetCursorPosition(2, temp_y);
         printf(">>");
 
@@ -759,12 +769,12 @@ void TokomediaUserDashboard(){
             range_max = range_min + 14;
         }
         else{
-            range_max = size_itemlist_tokomedia;
+            range_max = size_cart_tokomedia;
         }
         flag = 1;
     }
     else{
-        selected_itemlist_tokomedia = 0;
+        selected_cart_tokomedia = 0;
         SetCursorPosition(5, temp_y);
         printf("  ");
         printf("Itemlist Empty");
@@ -782,28 +792,28 @@ void TokomediaUserDashboard(){
 
             if(flag){
                 if(c == KEY_ENTER){
-                    struct ItemlistTokomedia *itemlist_tokomedia_selected = ServiceGetItemlistTokomediaFromHeadByIndex(itemlist_tokomedia_pagination, (selected_itemlist_tokomedia - 1));
+                    struct ItemlistTokomedia *itemlist_tokomedia_selected = ServiceGetItemlistTokomediaFromHeadByIndex(cart_tokomedia_pagination, (selected_cart_tokomedia - 1));
 //                    EmailInboxDescription(email_inbox_selected);
                 }
                 else if(c == KEY_UP){
-                    if(selected_itemlist_tokomedia == range_min){
+                    if(selected_cart_tokomedia == range_min){
                         continue;
                     }
                     SetCursorPosition(2, temp_y);
                     printf("  ");
                     temp_y--;
-                    selected_itemlist_tokomedia--;
+                    selected_cart_tokomedia--;
                     SetCursorPosition(2, temp_y);
                     printf(">>");
                 }
                 else if(c == KEY_DOWN){
-                    if(selected_itemlist_tokomedia == range_max){
+                    if(selected_cart_tokomedia == range_max){
                         continue;
                     }
                     SetCursorPosition(2, temp_y);
                     printf("  ");
                     temp_y++;
-                    selected_itemlist_tokomedia++;
+                    selected_cart_tokomedia++;
                     SetCursorPosition(2, temp_y);
                     printf(">>");
                 }
@@ -821,44 +831,105 @@ void TokomediaUserDashboard(){
                     tokomedia_user_itemlist_page_now++;
                     TokomediaUserDashboard();
                 }
-                else if(c == 'A' || c == 'a'){
-//                    EmailInboxArchive();
+                else if(c == '0'){
+                    tokomedia_user_itemlist_order_by = 0;
+                    TokomediaUserDashboard();
                 }
-                else if(c == 'D' || c == 'd'){
-//                    struct EmailInbox *email_inbox_selected = ServiceGetEmailInboxFromHeadByIndex(itemlist_tokomedia_head, (selected_itemlist_tokomedia - 1));
-//                    struct UpdateEmailInbox update_email_inbox;
-//                    update_email_inbox.id = email_inbox_selected->id;
-//                    update_email_inbox.sender_name = email_inbox_selected->sender_name;
-//                    update_email_inbox.subject = email_inbox_selected->subject;
-//                    update_email_inbox.description = email_inbox_selected->description;
-//                    update_email_inbox.available = 2;
-//                    update_email_inbox.read_status = email_inbox_selected->read_status;
-//                    update_email_inbox.sent_at = email_inbox_selected->sent_at;
-//                    update_email_inbox.receiver_email_id = email_inbox_selected->receiver_email_id;
-//                    ServiceUpdateEmailInbox(update_email_inbox);
-//                    EmailInboxDashboard();
+                else if(c == '1'){
+                    tokomedia_user_itemlist_order_by = 1;
+                    TokomediaUserDashboard();
                 }
-                else if(c == 'S' || c == 's'){
-//                    EmailSentDashboard();
+                else if(c == '2'){
+                    tokomedia_user_itemlist_order_by = 2;
+                    TokomediaUserDashboard();
                 }
-                else if(c == 'W' || c == 'w'){
-//                    EmailWriteMail();
+                else if(c == '3'){
+                    tokomedia_user_itemlist_order_by = 3;
+                    TokomediaUserDashboard();
                 }
-                else if(c == '0' || c == KEY_BACKSPACE){
+                else if(c == '4'){
+                    tokomedia_user_itemlist_order_by = 4;
+                    TokomediaUserDashboard();
+                }
+                else if(c == '5'){
+                    tokomedia_user_itemlist_order_by = 5;
+                    TokomediaUserDashboard();
+                }
+                else if(c == '6'){
+                    tokomedia_user_itemlist_order_by = 6;
+                    TokomediaUserDashboard();
+                }
+                else if(c == 'B' || c == 'b'){
+                    cart_tokomedia_y += 3;
+                    SetCursorPosition(0, cart_tokomedia_y);
+
+                    struct ItemlistTokomedia *itemlist_tokomedia_selected = ServiceGetItemlistTokomediaFromHeadByIndex(cart_tokomedia_pagination, (selected_cart_tokomedia - 1));
+
+                    if(itemlist_tokomedia_selected->stock <= 0){
+                        printf("No Stock Available\nPress Enter To Continue\n");
+                        getchar();
+                        TokomediaUserDashboard();
+                    }
+
+
+                    printf("Item Quantity : ");
+                    int qty;
+                    scanf("%d", &qty);
+                    getchar();
+
+                    if(itemlist_tokomedia_selected->stock < qty){
+                        printf("Order Quantity Exceeded\nPress Enter To Continue\n");
+                        getchar();
+                        TokomediaUserDashboard();
+                    }
+
+                    struct UpdateItemlistTokomedia temp_update_itemlist_tokomedia;
+                    temp_update_itemlist_tokomedia.id = itemlist_tokomedia_selected->id;
+                    temp_update_itemlist_tokomedia.item_name = itemlist_tokomedia_selected->item_name;
+                    temp_update_itemlist_tokomedia.price_per_unit = itemlist_tokomedia_selected->price_per_unit + itemlist_tokomedia_selected->discount_per_unit;
+                    temp_update_itemlist_tokomedia.discount_per_unit = itemlist_tokomedia_selected->discount_per_unit;
+                    temp_update_itemlist_tokomedia.stock = itemlist_tokomedia_selected->stock - qty;
+                    temp_update_itemlist_tokomedia.created_at = itemlist_tokomedia_selected->created_at;
+                    temp_update_itemlist_tokomedia.updated_at = GetTimeNow();
+                    temp_update_itemlist_tokomedia.tokomedia_shop_id = itemlist_tokomedia_selected->tokomedia_shop_id;
+
+                    ServiceUpdateItemlistTokomedia(temp_update_itemlist_tokomedia);
+
+                    struct NewCartTokomedia new_user_cart;
+                    new_user_cart.item_name = itemlist_tokomedia_selected->item_name;
+                    new_user_cart.price_per_unit = itemlist_tokomedia_selected->price_per_unit;
+                    new_user_cart.qty = qty;
+                    new_user_cart.total_price = qty * new_user_cart.price_per_unit;
+                    new_user_cart.created_at = GetTimeNow();
+                    new_user_cart.itemlist_id = itemlist_tokomedia_selected->id;
+                    new_user_cart.tokomedia_user_id = tokomedia_user_login_now->id;
+                    new_user_cart.tokomedia_shop_id = itemlist_tokomedia_selected->tokomedia_shop_id;
+
+                    ServiceCreateCartTokomedia(new_user_cart);
+
+                    printf("Successfully Added");
+                    getchar();
+                    TokomediaUserDashboard();
+                }
+                else if(c == 'C' || c == 'c'){
+                    TokomediaUserCart();
+                }
+                else if(c == KEY_BACKSPACE){
                     system("@cls||clear");
                     printf("Logging Out . . . .\n");
                     printf("Press Enter To Continue\n");
                     getchar();
+
                     tokomedia_user_itemlist_page_now = 1;
                     tokomedia_user_itemlist_order_by = 0;
                     TokomediaUserMainMenu();
                 }
             }
             else{
-                if(c == 'A' || c == 'a'){
-//                    EmailInboxArchive();
+                if(c == 'C' || c == 'c'){
+                    TokomediaUserCart();
                 }
-                else if(c == '0' || c == KEY_BACKSPACE){
+                else if(c == KEY_BACKSPACE){
                     system("@cls||clear");
                     printf("Logging Out . . . .\n");
                     printf("Press Enter To Continue\n");
@@ -867,17 +938,622 @@ void TokomediaUserDashboard(){
                     tokomedia_user_itemlist_order_by = 0;
                     TokomediaUserMainMenu();
                 }
-                else if(c == 'W' || c == 'w'){
-//                    EmailWriteMail();
+            }
+        }
+    }
+}
+
+void TokomediaUserCart(){
+    PrintTokomediaHeader();
+
+    SetCursorPosition(0,8);
+    printf("Welcome, %s Your Balance : Rp %d\n", tokomedia_user_login_now->name, tokomedia_user_login_now->balance);
+    for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
+
+    struct CartTokomedia *cart_tokomedia_head = ServiceGetCartTokomediaByTokomediaUserID(tokomedia_user_login_now->id);
+
+    int size_cart_tokomedia = ServiceGetCartTokomediaSize(cart_tokomedia_head);
+
+    ServiceFreeCartTokomediaLinkedList(cart_tokomedia_head);
+
+    char email_count_text[50];
+
+    sprintf(email_count_text, "%d Item(s) In Your Cart\n", size_cart_tokomedia);
+
+    int count_temp_pos = 58;
+    SetCursorPosition(count_temp_pos, 8);
+    printf("%s", email_count_text);
+
+    int max_pagination_page;
+    if(size_cart_tokomedia % 15 == 0){
+        max_pagination_page = size_cart_tokomedia / 15;
+    }
+    else{
+        max_pagination_page = size_cart_tokomedia / 15 + 1;
+    }
+
+    SetCursorPosition(8,10);
+    printf("Item Name");
+    SetCursorPosition(28,10);
+    printf("@Price");
+    SetCursorPosition(40,10);
+    printf("Qty");
+    SetCursorPosition(45,10);
+    printf("Total Price");
+    SetCursorPosition(57,10);
+    printf("Created At");
+    SetCursorPosition(80,10);
+    printf("Shop");
+
+    SetCursorPosition(0, 11);
+    for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
+
+    int cart_tokomedia_y = 12;
+    int temp_y = cart_tokomedia_y;
+
+    int item_counter_on_page;
+    if(max_pagination_page == 0){
+        item_counter_on_page = 0;
+    }
+    else if(tokomedia_user_itemlist_page_now != max_pagination_page){
+        item_counter_on_page = 15;
+    }
+    else{
+        item_counter_on_page = size_cart_tokomedia - (tokomedia_user_itemlist_page_now - 1) * 15;
+    }
+
+    struct CartTokomedia *cart_tokomedia_pagination = ServiceGetCartTokomediaPaginationByUserID(15, tokomedia_user_itemlist_page_now, tokomedia_user_itemlist_order_by, tokomedia_user_login_now->id);
+    struct CartTokomedia *head_dummy = cart_tokomedia_pagination;
+
+    while(head_dummy != NULL){
+        SetCursorPosition(5,cart_tokomedia_y);
+
+        SetCursorPosition(8,cart_tokomedia_y);
+        if(strlen(head_dummy->item_name) > 22){
+            for(int i = 0; i < 22; i++){
+                printf("%c", head_dummy->item_name[i]);
+            }
+        }
+        else{
+            printf("%s", head_dummy->item_name);
+        }
+        SetCursorPosition(28, cart_tokomedia_y);
+        printf("%d", head_dummy->price_per_unit);
+        SetCursorPosition(40, cart_tokomedia_y);
+        printf("%d", head_dummy->qty);
+        SetCursorPosition(45, cart_tokomedia_y);
+        printf("%d", head_dummy->total_price);
+        SetCursorPosition(57, cart_tokomedia_y);
+        printf("%s", head_dummy->created_at);
+        SetCursorPosition(80, cart_tokomedia_y);
+
+        struct TokomediaShopAccount *shop_acc = ServiceGetTokomediaShopAccountByID(head_dummy->tokomedia_shop_id);
+
+        printf("%s", shop_acc->name);
+
+        ServiceFreeTokomediaShopAccountLinkedList(shop_acc);
+
+        head_dummy = head_dummy->next;
+        cart_tokomedia_y++;
+    }
+
+    SetCursorPosition(0, cart_tokomedia_y + 1);
+    for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
+    SetCursorPosition(27, cart_tokomedia_y + 2);
+    printf("%d/%d", tokomedia_user_itemlist_page_now, max_pagination_page);
+
+    int selected_cart_tokomedia;
+    int range_min, range_max;
+    int flag = 0;
+
+    head_dummy = cart_tokomedia_pagination;
+    size_cart_tokomedia = ServiceGetCartTokomediaSize(head_dummy);
+
+    if(size_cart_tokomedia > 0){
+        selected_cart_tokomedia = 1;
+        SetCursorPosition(2, temp_y);
+        printf(">>");
+
+        range_min = 1;
+        if(tokomedia_user_itemlist_page_now != max_pagination_page){
+            range_max = range_min + 14;
+        }
+        else{
+            range_max = size_cart_tokomedia;
+        }
+        flag = 1;
+    }
+    else{
+        selected_cart_tokomedia = 0;
+        SetCursorPosition(5, temp_y);
+        printf("  ");
+        printf("Cart Empty");
+    }
+
+    while(1){
+        SetCursorVisible(false);
+        SetCursorPosition(0,7);
+        time_t tempTime;
+        time(&tempTime);
+        printf("%s", ctime(&tempTime));
+
+        if(kbhit()){
+            char c = getch();
+
+            if(flag){
+                if(c == KEY_ENTER){
+//                    struct ItemlistTokomedia *itemlist_tokomedia_selected = ServiceGetItemlistTokomediaFromHeadByIndex(cart_tokomedia_pagination, (selected_cart_tokomedia - 1));
+//                    EmailInboxDescription(email_inbox_selected);
                 }
-                else if(c == 'S' || c == 's'){
-//                    EmailSentDashboard();
+                else if(c == KEY_UP){
+                    if(selected_cart_tokomedia == range_min){
+                        continue;
+                    }
+                    SetCursorPosition(2, temp_y);
+                    printf("  ");
+                    temp_y--;
+                    selected_cart_tokomedia--;
+                    SetCursorPosition(2, temp_y);
+                    printf(">>");
+                }
+                else if(c == KEY_DOWN){
+                    if(selected_cart_tokomedia == range_max){
+                        continue;
+                    }
+                    SetCursorPosition(2, temp_y);
+                    printf("  ");
+                    temp_y++;
+                    selected_cart_tokomedia++;
+                    SetCursorPosition(2, temp_y);
+                    printf(">>");
+                }
+                else if(c == KEY_LEFT){
+                    if(tokomedia_user_itemlist_page_now == 1){
+                        continue;
+                    }
+                    tokomedia_user_itemlist_page_now--;
+                    TokomediaUserCart();
+                }
+                else if(c == KEY_RIGHT){
+                    if(tokomedia_user_itemlist_page_now == max_pagination_page){
+                        continue;
+                    }
+                    tokomedia_user_itemlist_page_now++;
+                    TokomediaUserCart();
+                }
+                else if(c == '0'){
+                    tokomedia_user_itemlist_order_by = 0;
+                    TokomediaUserCart();
+                }
+                else if(c == '1'){
+                    tokomedia_user_itemlist_order_by = 1;
+                    TokomediaUserCart();
+                }
+                else if(c == '2'){
+                    tokomedia_user_itemlist_order_by = 2;
+                    TokomediaUserCart();
+                }
+                else if(c == '3'){
+                    tokomedia_user_itemlist_order_by = 3;
+                    TokomediaUserCart();
+                }
+                else if(c == '4'){
+                    tokomedia_user_itemlist_order_by = 4;
+                    TokomediaUserCart();
+                }
+                else if(c == '5'){
+                    tokomedia_user_itemlist_order_by = 5;
+                    TokomediaUserCart();
+                }
+                else if(c == '6'){
+                    tokomedia_user_itemlist_order_by = 6;
+                    TokomediaUserCart();
+                }
+                else if(c == 'T' || c == 't'){
+                    cart_tokomedia_y += 4;
+
+                    SetCursorPosition(0, cart_tokomedia_y);
+                    printf("Convert Cart(s) into transaction : >>  Yes        No ");
+                          //12345678901234567890123456789012345678901234567890123
+                    int temp_opt = 1;
+                    while(1){
+                        if(kbhit()){
+                            char temp_c = getch();
+                            if(temp_c == KEY_ENTER){
+                                break;
+                            }
+                            else if(temp_c == KEY_LEFT){
+                                if(temp_opt == 2){
+                                    SetCursorPosition(46, cart_tokomedia_y);
+                                    printf("  ");
+                                    SetCursorPosition(35, cart_tokomedia_y);
+                                    printf(">>");
+                                    temp_opt = 1;
+                                }
+                            }
+                            else if(temp_c == KEY_RIGHT){
+                                if(temp_opt == 1){
+                                    SetCursorPosition(35, cart_tokomedia_y);
+                                    printf("  ");
+                                    SetCursorPosition(46, cart_tokomedia_y);
+                                    printf(">>");
+                                    temp_opt = 2;
+                                }
+                            }
+                        }
+                    }
+
+                    if(temp_opt == 1){
+                        struct CartTokomedia *full_head = ServiceGetCartTokomediaByTokomediaUserID(tokomedia_user_login_now->id);
+
+                        struct CartTokomedia *dummy_head = full_head;
+
+                        int total_price = 0;
+
+                        while(dummy_head != NULL){
+                            total_price += dummy_head->total_price;
+                            dummy_head = dummy_head->next;
+                        }
+
+                        struct NewTransactionTokomedia  new_trans;
+                        new_trans.status = 2;
+                        new_trans.total_price = total_price;
+                        new_trans.created_at = GetTimeNow();
+                        new_trans.updated_at = GetTimeZero();
+                        new_trans.tokomedia_user_id = tokomedia_user_login_now->id;
+
+                        int last_id = ServiceCreateTransactionTokomedia(new_trans);
+
+                        while(full_head != NULL){
+                            struct NewOrderDetailsTokomedia new_order;
+
+                            new_order.item_name = full_head->item_name;
+                            new_order.status = 2;
+                            new_order.price_per_unit = full_head->price_per_unit;
+                            new_order.qty = full_head->qty;
+                            new_order.total_price = full_head->total_price;
+                            new_order.created_at = GetTimeNow();
+                            new_order.updated_at = GetTimeZero();
+                            new_order.itemlist_id = full_head->itemlist_id;
+                            new_order.tokomedia_shop_id = full_head->tokomedia_shop_id;
+                            new_order.transaction_id = last_id;
+
+                            ServiceCreateOrderDetailsTokomedia(new_order);
+
+                            ServiceDeleteCartTokomedia(full_head->id);
+                            full_head = full_head->next;
+                        }
+
+                        SetCursorPosition(0, cart_tokomedia_y + 2);
+                        printf("Success\nPress Enter To Continue");
+                        getchar();
+                        TokomediaUserCart();
+                    }
+                    else{
+                        TokomediaUserCart();
+                    }
+                }
+                else if(c == KEY_BACKSPACE){
+                    TokomediaUserDashboard();
+                }
+            }
+            else{
+                if(c == 'C' || c == 'c'){
+//                    EmailInboxArchive();
+                }
+                else if(c == KEY_BACKSPACE){
+                    TokomediaUserDashboard();
                 }
             }
         }
     }
+}
 
+void TokomediaUserTransactionPage(){
 
+    PrintTokomediaHeader();
+
+    SetCursorPosition(0,8);
+    printf("Welcome, %s Your Balance : Rp %d\n", tokomedia_user_login_now->name, tokomedia_user_login_now->balance);
+    for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
+
+    struct CartTokomedia *cart_tokomedia_head = ServiceGetCartTokomediaByTokomediaUserID(tokomedia_user_login_now->id);
+
+    int size_cart_tokomedia = ServiceGetCartTokomediaSize(cart_tokomedia_head);
+
+    ServiceFreeCartTokomediaLinkedList(cart_tokomedia_head);
+
+    char email_count_text[50];
+
+    sprintf(email_count_text, "%d Item(s) In Your Cart\n", size_cart_tokomedia);
+
+    int count_temp_pos = 58;
+    SetCursorPosition(count_temp_pos, 8);
+    printf("%s", email_count_text);
+
+    int max_pagination_page;
+    if(size_cart_tokomedia % 15 == 0){
+        max_pagination_page = size_cart_tokomedia / 15;
+    }
+    else{
+        max_pagination_page = size_cart_tokomedia / 15 + 1;
+    }
+
+    SetCursorPosition(8,10);
+    printf("Item Name");
+    SetCursorPosition(28,10);
+    printf("@Price");
+    SetCursorPosition(40,10);
+    printf("Qty");
+    SetCursorPosition(45,10);
+    printf("Total Price");
+    SetCursorPosition(57,10);
+    printf("Created At");
+    SetCursorPosition(80,10);
+    printf("Shop");
+
+    SetCursorPosition(0, 11);
+    for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
+
+    int cart_tokomedia_y = 12;
+    int temp_y = cart_tokomedia_y;
+
+    int item_counter_on_page;
+    if(max_pagination_page == 0){
+        item_counter_on_page = 0;
+    }
+    else if(tokomedia_user_itemlist_page_now != max_pagination_page){
+        item_counter_on_page = 15;
+    }
+    else{
+        item_counter_on_page = size_cart_tokomedia - (tokomedia_user_itemlist_page_now - 1) * 15;
+    }
+
+    struct CartTokomedia *cart_tokomedia_pagination = ServiceGetCartTokomediaPaginationByUserID(15, tokomedia_user_itemlist_page_now, tokomedia_user_itemlist_order_by, tokomedia_user_login_now->id);
+    struct CartTokomedia *head_dummy = cart_tokomedia_pagination;
+
+    while(head_dummy != NULL){
+        SetCursorPosition(5,cart_tokomedia_y);
+
+        SetCursorPosition(8,cart_tokomedia_y);
+        if(strlen(head_dummy->item_name) > 22){
+            for(int i = 0; i < 22; i++){
+                printf("%c", head_dummy->item_name[i]);
+            }
+        }
+        else{
+            printf("%s", head_dummy->item_name);
+        }
+        SetCursorPosition(28, cart_tokomedia_y);
+        printf("%d", head_dummy->price_per_unit);
+        SetCursorPosition(40, cart_tokomedia_y);
+        printf("%d", head_dummy->qty);
+        SetCursorPosition(45, cart_tokomedia_y);
+        printf("%d", head_dummy->total_price);
+        SetCursorPosition(57, cart_tokomedia_y);
+        printf("%s", head_dummy->created_at);
+        SetCursorPosition(80, cart_tokomedia_y);
+
+        struct TokomediaShopAccount *shop_acc = ServiceGetTokomediaShopAccountByID(head_dummy->tokomedia_shop_id);
+
+        printf("%s", shop_acc->name);
+
+        ServiceFreeTokomediaShopAccountLinkedList(shop_acc);
+
+        head_dummy = head_dummy->next;
+        cart_tokomedia_y++;
+    }
+
+    SetCursorPosition(0, cart_tokomedia_y + 1);
+    for(int i = 0; i < 100; i++) printf("%c", char(HORIZON_LINE));
+    SetCursorPosition(27, cart_tokomedia_y + 2);
+    printf("%d/%d", tokomedia_user_itemlist_page_now, max_pagination_page);
+
+    int selected_cart_tokomedia;
+    int range_min, range_max;
+    int flag = 0;
+
+    head_dummy = cart_tokomedia_pagination;
+    size_cart_tokomedia = ServiceGetCartTokomediaSize(head_dummy);
+
+    if(size_cart_tokomedia > 0){
+        selected_cart_tokomedia = 1;
+        SetCursorPosition(2, temp_y);
+        printf(">>");
+
+        range_min = 1;
+        if(tokomedia_user_itemlist_page_now != max_pagination_page){
+            range_max = range_min + 14;
+        }
+        else{
+            range_max = size_cart_tokomedia;
+        }
+        flag = 1;
+    }
+    else{
+        selected_cart_tokomedia = 0;
+        SetCursorPosition(5, temp_y);
+        printf("  ");
+        printf("Cart Empty");
+    }
+
+    while(1){
+        SetCursorVisible(false);
+        SetCursorPosition(0,7);
+        time_t tempTime;
+        time(&tempTime);
+        printf("%s", ctime(&tempTime));
+
+        if(kbhit()){
+            char c = getch();
+
+            if(flag){
+                if(c == KEY_ENTER){
+//                    struct ItemlistTokomedia *itemlist_tokomedia_selected = ServiceGetItemlistTokomediaFromHeadByIndex(cart_tokomedia_pagination, (selected_cart_tokomedia - 1));
+//                    EmailInboxDescription(email_inbox_selected);
+                }
+                else if(c == KEY_UP){
+                    if(selected_cart_tokomedia == range_min){
+                        continue;
+                    }
+                    SetCursorPosition(2, temp_y);
+                    printf("  ");
+                    temp_y--;
+                    selected_cart_tokomedia--;
+                    SetCursorPosition(2, temp_y);
+                    printf(">>");
+                }
+                else if(c == KEY_DOWN){
+                    if(selected_cart_tokomedia == range_max){
+                        continue;
+                    }
+                    SetCursorPosition(2, temp_y);
+                    printf("  ");
+                    temp_y++;
+                    selected_cart_tokomedia++;
+                    SetCursorPosition(2, temp_y);
+                    printf(">>");
+                }
+                else if(c == KEY_LEFT){
+                    if(tokomedia_user_itemlist_page_now == 1){
+                        continue;
+                    }
+                    tokomedia_user_itemlist_page_now--;
+                    TokomediaUserCart();
+                }
+                else if(c == KEY_RIGHT){
+                    if(tokomedia_user_itemlist_page_now == max_pagination_page){
+                        continue;
+                    }
+                    tokomedia_user_itemlist_page_now++;
+                    TokomediaUserCart();
+                }
+                else if(c == '0'){
+                    tokomedia_user_itemlist_order_by = 0;
+                    TokomediaUserCart();
+                }
+                else if(c == '1'){
+                    tokomedia_user_itemlist_order_by = 1;
+                    TokomediaUserCart();
+                }
+                else if(c == '2'){
+                    tokomedia_user_itemlist_order_by = 2;
+                    TokomediaUserCart();
+                }
+                else if(c == '3'){
+                    tokomedia_user_itemlist_order_by = 3;
+                    TokomediaUserCart();
+                }
+                else if(c == '4'){
+                    tokomedia_user_itemlist_order_by = 4;
+                    TokomediaUserCart();
+                }
+                else if(c == '5'){
+                    tokomedia_user_itemlist_order_by = 5;
+                    TokomediaUserCart();
+                }
+                else if(c == '6'){
+                    tokomedia_user_itemlist_order_by = 6;
+                    TokomediaUserCart();
+                }
+                else if(c == 'T' || c == 't'){
+                    cart_tokomedia_y += 4;
+
+                    SetCursorPosition(0, cart_tokomedia_y);
+                    printf("Convert Cart(s) into transaction : >>  Yes        No ");
+                          //12345678901234567890123456789012345678901234567890123
+                    int temp_opt = 1;
+                    while(1){
+                        if(kbhit()){
+                            char temp_c = getch();
+                            if(temp_c == KEY_ENTER){
+                                break;
+                            }
+                            else if(temp_c == KEY_LEFT){
+                                if(temp_opt == 2){
+                                    SetCursorPosition(46, cart_tokomedia_y);
+                                    printf("  ");
+                                    SetCursorPosition(35, cart_tokomedia_y);
+                                    printf(">>");
+                                    temp_opt = 1;
+                                }
+                            }
+                            else if(temp_c == KEY_RIGHT){
+                                if(temp_opt == 1){
+                                    SetCursorPosition(35, cart_tokomedia_y);
+                                    printf("  ");
+                                    SetCursorPosition(46, cart_tokomedia_y);
+                                    printf(">>");
+                                    temp_opt = 2;
+                                }
+                            }
+                        }
+                    }
+
+                    if(temp_opt == 1){
+                        struct CartTokomedia *full_head = ServiceGetCartTokomediaByTokomediaUserID(tokomedia_user_login_now->id);
+
+                        struct CartTokomedia *dummy_head = full_head;
+
+                        int total_price = 0;
+
+                        while(dummy_head != NULL){
+                            total_price += dummy_head->total_price;
+                            dummy_head = dummy_head->next;
+                        }
+
+                        struct NewTransactionTokomedia  new_trans;
+                        new_trans.status = 2;
+                        new_trans.total_price = total_price;
+                        new_trans.created_at = GetTimeNow();
+                        new_trans.updated_at = GetTimeZero();
+                        new_trans.tokomedia_user_id = tokomedia_user_login_now->id;
+
+                        int last_id = ServiceCreateTransactionTokomedia(new_trans);
+
+                        while(full_head != NULL){
+                            struct NewOrderDetailsTokomedia new_order;
+
+                            new_order.item_name = full_head->item_name;
+                            new_order.status = 2;
+                            new_order.price_per_unit = full_head->price_per_unit;
+                            new_order.qty = full_head->qty;
+                            new_order.total_price = full_head->total_price;
+                            new_order.created_at = GetTimeNow();
+                            new_order.updated_at = GetTimeZero();
+                            new_order.itemlist_id = full_head->itemlist_id;
+                            new_order.tokomedia_shop_id = full_head->tokomedia_shop_id;
+                            new_order.transaction_id = last_id;
+
+                            ServiceCreateOrderDetailsTokomedia(new_order);
+
+                            ServiceDeleteCartTokomedia(full_head->id);
+                            full_head = full_head->next;
+                        }
+
+                        SetCursorPosition(0, cart_tokomedia_y + 2);
+                        printf("Success\nPress Enter To Continue");
+                        getchar();
+                        TokomediaUserCart();
+                    }
+                    else{
+                        TokomediaUserCart();
+                    }
+                }
+                else if(c == KEY_BACKSPACE){
+                    TokomediaUserDashboard();
+                }
+            }
+            else{
+                if(c == 'C' || c == 'c'){
+//                    EmailInboxArchive();
+                }
+                else if(c == KEY_BACKSPACE){
+                    TokomediaUserDashboard();
+                }
+            }
+        }
+    }
 }
 
 void PrintTokomediaHeader(){
@@ -887,10 +1563,10 @@ void PrintTokomediaHeader(){
         printf("%s\n", TokomediaSymbol[i]);
     }
 
-    SetCursorPosition(0, symbol_height + 1);
-    for(int i = 0; i < strlen(TokomediaSymbol[0]);i++){
-        printf("%c", char(HORIZON_LINE));
-    }
+//    SetCursorPosition(0, symbol_height + 1);
+//    for(int i = 0; i < strlen(TokomediaSymbol[0]);i++){
+//        printf("%c", char(HORIZON_LINE));
+//    }
 }
 
 #endif // DISPLAY_TOKOMEDIA_PARAM

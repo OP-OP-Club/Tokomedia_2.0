@@ -7,15 +7,15 @@
 #include"../../model/Tokomedia/modelCartTokomedia.h"
 #include"../../tools/hasherTools.h"
 
-#include"serviceTokomediaAccount.h"
-#include"serviceItemlistTokomedia.h"
 #include"serviceCartTokomedia.h"
 #include"serviceTransactionTokomedia.h"
+#include"serviceTokomediaAccount.h"
+#include"serviceItemlistTokomedia.h"
 #include"serviceOrderDetailsTokomedia.h"
 
-bool ServiceCreateTokomediaShopAccount();
-bool ServiceUpdateTokomediaShopAccount();
-bool ServiceDeleteTokomediaShopAccount();
+bool ServiceCreateTokomediaShopAccount(struct NewTokomediaShopAccount);
+bool ServiceUpdateTokomediaShopAccount(struct UpdateTokomediaShopAccount);
+bool ServiceDeleteTokomediaShopAccount(int id);
 struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByID(int id);
 struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByEmail(char* email);
 struct TokomediaShopAccount* ServiceGetTokomediaShopAccountAll();
@@ -63,6 +63,8 @@ bool ServiceUpdateTokomediaShopAccount(struct UpdateTokomediaShopAccount input) 
 
     Environment env;
     input.email = ToLower(input.email);
+
+    input.password = sha256Hashing(input.password);
 
     char query[1000];
 

@@ -1,5 +1,5 @@
-#ifndef SERVICE_PARAM_CART_TOKOMEDIA
-#define SERVICE_PARAM_CART_TOKOMEDIA 1
+#ifndef SERVICE_PARAM_TRANSACTION_TOKOMEDIA
+#define SERVICE_PARAM_TRANSACTION_TOKOMEDIA 1
 
 #include"../../env.h"
 #include"../../config/connectDatabase.h"
@@ -8,12 +8,12 @@
 #include"../../tools/hasherTools.h"
 
 #include"serviceOrderDetailsTokomedia.h"
-#include"serviceTransactionTokomedia.h"
+#include"serviceCartTokomedia.h";
 #include"serviceTokomediaShopAccount.h"
 #include"serviceTokomediaAccount.h"
 #include"serviceItemlistTokomedia.h"
 
-bool ServiceCreateTransactionTokomedia(struct NewTransactionTokomedia input);
+int ServiceCreateTransactionTokomedia(struct NewTransactionTokomedia input);
 bool ServiceUpdateTransactionTokomedia(struct UpdateTransactionTokomedia input);
 bool ServiceDeleteTransactionTokomedia(int id);
 struct TransactionTokomedia* ServiceGetTransactionTokomediaByID(int id);
@@ -22,7 +22,7 @@ struct TransactionTokomedia* ServiceGetTransactionTokomediaByTokomediaUserID(int
 bool ServiceFreeTransactionTokomediaLinkedList(struct TransactionTokomedia *head);
 struct TransactionTokomedia* GetTransactionTokomediaFromHeadByIndex(struct TransactionTokomedia *head, int index);
 
-bool ServiceCreateTransactionTokomedia(struct NewTransactionTokomedia input){
+int ServiceCreateTransactionTokomedia(struct NewTransactionTokomedia input){
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -41,12 +41,25 @@ bool ServiceCreateTransactionTokomedia(struct NewTransactionTokomedia input){
     int q_state = 0;
     q_state = mysql_query(conn, q);
 
-    mysql_close(conn);
+    sprintf(query, "SELECT MAX(id) from %s;", env.UserGetTransactionTokomediaTableName());
+
+    q_state = mysql_query(conn, q);
+
     if(!q_state){
-        return true;
+        MYSQL_RES *res = mysql_store_result(conn);
+        MYSQL_ROW row;
+
+        int last_id;
+        while(row = mysql_fetch_row(res)){
+            last_id = Atoi(row[0]);
+        }
+
+        mysql_close(conn);
+        return last_id;
     }
     else{
-        return false;
+    mysql_close(conn);
+        return 0;
     }
 }
 
@@ -284,4 +297,4 @@ struct TransactionTokomedia* GetTransactionTokomediaFromHeadByIndex(struct Trans
     return head;
 }
 
-#endif // SERVICE_PARAM_CART_TOKOMEDIA
+#endif // SERVICE_PARAM_TRANSACTION_TOKOMEDIA

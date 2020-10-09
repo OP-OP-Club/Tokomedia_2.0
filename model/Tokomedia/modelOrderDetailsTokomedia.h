@@ -16,7 +16,7 @@ struct OrderDetailsTokomedia {
     int total_price;
     char* created_at;
     char* updated_at;
-    int item_list_id;
+    int itemlist_id;
     int tokomedia_shop_id;
     int transaction_id;
 
@@ -31,7 +31,7 @@ struct NewOrderDetailsTokomedia {
     int total_price;
     char* created_at;
     char* updated_at;
-    int item_list_id;
+    int itemlist_id;
     int tokomedia_shop_id;
     int transaction_id;
 };
@@ -45,7 +45,7 @@ struct UpdateOrderDetailsTokomedia {
     int total_price;
     char* created_at;
     char* updated_at;
-    int item_list_id;
+    int itemlist_id;
     int tokomedia_shop_id;
     int transaction_id;
 };
