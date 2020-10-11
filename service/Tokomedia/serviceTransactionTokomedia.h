@@ -16,11 +16,13 @@
 int ServiceCreateTransactionTokomedia(struct NewTransactionTokomedia input);
 bool ServiceUpdateTransactionTokomedia(struct UpdateTransactionTokomedia input);
 bool ServiceDeleteTransactionTokomedia(int id);
+int ServiceGetTransactionTokomediaSize(struct TransactionTokomedia *head);
 struct TransactionTokomedia* ServiceGetTransactionTokomediaByID(int id);
 struct TransactionTokomedia* ServiceGetTransactionTokomediaByTokomediaUserID(int id);
 //struct TransactionTokomedia* ServiceGetTransactionTokomediaAll();
 bool ServiceFreeTransactionTokomediaLinkedList(struct TransactionTokomedia *head);
-struct TransactionTokomedia* GetTransactionTokomediaFromHeadByIndex(struct TransactionTokomedia *head, int index);
+struct TransactionTokomedia* ServiceGetTransactionTokomediaFromHeadByIndex(struct TransactionTokomedia *head, int index);
+struct TransactionTokomedia* ServiceGetTransactionTokomediaPaginationByUserID(int limit, int page, int order_by, int user_id);
 
 int ServiceCreateTransactionTokomedia(struct NewTransactionTokomedia input){
     MYSQL *conn = ConnectDatabase();
@@ -119,6 +121,17 @@ bool ServiceDeleteTransactionTokomedia(int id){
     }
 }
 
+int ServiceGetTransactionTokomediaSize(struct TransactionTokomedia *head){
+    int counter = 0;
+
+    while(head != NULL){
+        counter++;
+        head = head->next;
+    }
+
+    return counter;
+}
+
 struct TransactionTokomedia* ServiceGetTransactionTokomediaByID(int id){
     MYSQL *conn = ConnectDatabase();
     struct TransactionTokomedia* temp = NULL;
@@ -194,7 +207,6 @@ struct TransactionTokomedia* ServiceGetTransactionTokomediaByTokomediaUserID(int
             temp->created_at = row[3];
             temp->updated_at = row[4];
             temp->tokomedia_user_id = Atoi(row[5]);
-            temp->next = NULL;
             temp->next = NULL;
 
             if(head == NULL){
@@ -281,7 +293,7 @@ bool ServiceFreeTransactionTokomediaLinkedList(struct TransactionTokomedia *head
     return true;
 }
 
-struct TransactionTokomedia* GetTransactionTokomediaFromHeadByIndex(struct TransactionTokomedia *head, int index){
+struct TransactionTokomedia* ServiceGetTransactionTokomediaFromHeadByIndex(struct TransactionTokomedia *head, int index){
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -295,6 +307,84 @@ struct TransactionTokomedia* GetTransactionTokomediaFromHeadByIndex(struct Trans
     }
 
     return head;
+}
+
+struct TransactionTokomedia* ServiceGetTransactionTokomediaPaginationByUserID(int limit, int page, int order_by, int user_id){
+    MYSQL *conn = ConnectDatabase();
+    struct TransactionTokomedia *head, *tail;
+    head = tail = NULL;
+
+    if(!conn){
+        mysql_close(conn);
+        return head;
+    }
+
+    Environment env;
+
+    int offset = (page - 1) * limit;
+
+    char query[1000];
+    char temp[1000];
+    sprintf(temp, "SELECT id, status, total_price, created_at, updated_at, tokomedia_user_id FROM %s WHERE tokomedia_user_id = %d", env.UserGetTransactionTokomediaTableName(), user_id);
+
+    if(order_by == 1){
+        sprintf(temp, "%s ORDER BY status ASC", temp);
+    }
+    else if(order_by == 2){
+        sprintf(temp, "%s ORDER BY status DESC", temp);
+    }
+    else if(order_by == 3){
+        sprintf(temp, "%s ORDER BY total_price ASC", temp);
+    }
+    else if(order_by == 4){
+        sprintf(temp, "%s ORDER BY total_price DESC", temp);
+    }
+    else if(order_by == 5){
+        sprintf(temp, "%s ORDER BY created_at ASC", temp);
+    }
+    else if(order_by == 6){
+        sprintf(temp, "%s ORDER BY created_at DESC", temp);
+    }
+    else{
+        sprintf(temp, "%s", temp);
+    }
+
+    sprintf(query, "%s LIMIT %d, %d;", temp, offset, limit);
+
+    const char *q = query;
+
+    int q_state = 0;
+    q_state = mysql_query(conn, q);
+
+    if(!q_state){
+        MYSQL_RES *res = mysql_store_result(conn);
+        MYSQL_ROW row;
+
+        while(row = mysql_fetch_row(res)){
+            struct TransactionTokomedia *temp = (struct TransactionTokomedia*) malloc(sizeof(struct TransactionTokomedia));
+            temp->id = Atoi(row[0]);
+            temp->status = Atoi(row[1]);
+            temp->total_price = Atoi(row[2]);
+            temp->created_at = row[3];
+            temp->updated_at = row[4];
+            temp->tokomedia_user_id = Atoi(row[5]);
+            temp->next = NULL;
+
+            if(head == NULL){
+                head = tail = temp;
+            }
+            else{
+                tail->next = temp;
+                tail = tail->next;
+            }
+        }
+        mysql_close(conn);
+        return head;
+    }
+    else{
+        mysql_close(conn);
+        return head;
+    }
 }
 
 #endif // SERVICE_PARAM_TRANSACTION_TOKOMEDIA

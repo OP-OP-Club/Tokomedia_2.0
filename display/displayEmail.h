@@ -167,6 +167,9 @@ void EmailMainMenu(){
                     EmailRegisterMenu();
                     break;
                 }
+                else if(option_now == 13){
+                    break;
+                }
             }
 
         }

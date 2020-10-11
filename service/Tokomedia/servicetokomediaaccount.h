@@ -14,7 +14,8 @@
 #include"serviceOrderDetailsTokomedia.h"
 
 bool ServiceCreateTokomediaUserAccount(struct NewTokomediaUserAccount);
-bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount);
+bool ServiceUpdateTokomediaUserAccountNormal(struct UpdateTokomediaUserAccount);
+bool ServiceUpdateTokomediaUserAccountNoPassword(struct UpdateTokomediaUserAccount);
 bool ServiceDeleteTokomediaUserAccount(int id);
 struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByID(int id);
 struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByEmail(char* email);
@@ -53,7 +54,7 @@ bool ServiceCreateTokomediaUserAccount(struct NewTokomediaUserAccount input) {
     }
 }
 
-bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount input) {
+bool ServiceUpdateTokomediaUserAccountNormal(struct UpdateTokomediaUserAccount input) {
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -65,6 +66,35 @@ bool ServiceUpdateTokomediaUserAccount(struct UpdateTokomediaUserAccount input) 
     input.email = ToLower(input.email);
 
     input.password = sha256Hashing(input.password);
+
+    char query[1000];
+
+    sprintf(query, "UPDATE %s SET name = \'%s\', email = \'%s\', password = \'%s\', balance = %d, security_code = \'%s\', created_at = \'%s\', last_login = \'%s\' WHERE id = %d;", env.UserGetTokomediaUserAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login, input.id);
+
+    const char *q = query;
+
+    int q_state = 0;
+    q_state = mysql_query(conn, q);
+
+    mysql_close(conn);
+    if(!q_state){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool ServiceUpdateTokomediaUserAccountNoPassword(struct UpdateTokomediaUserAccount input) {
+    MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        mysql_close(conn);
+        return false;
+    }
+
+    Environment env;
+    input.email = ToLower(input.email);
 
     char query[1000];
 
@@ -167,6 +197,8 @@ struct TokomediaUserAccount* ServiceGetTokomediaUserAccountByEmail(char* email){
     }
 
     Environment env;
+
+    email = ToLower(email);
 
     char query[1000];
 

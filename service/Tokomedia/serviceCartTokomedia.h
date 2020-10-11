@@ -19,6 +19,7 @@ bool ServiceDeleteCartTokomedia(int id);
 int ServiceGetCartTokomediaSize(struct CartTokomedia *head);
 struct CartTokomedia* ServiceGetCartTokomediaByID(int id);
 struct CartTokomedia* ServiceGetCartTokomediaByTokomediaUserID(int id);
+struct CartTokomedia* ServiceGetCartTokomediaByItemlistID(int id);
 //struct CartTokomedia* ServiceGetCartTokomediaAll();
 bool ServiceFreeCartTokomediaLinkedList(struct CartTokomedia *head);
 struct CartTokomedia* ServiceGetCartTokomediaFromHeadByIndex(struct CartTokomedia *head, int index);
@@ -180,6 +181,83 @@ struct CartTokomedia* ServiceGetCartTokomediaByTokomediaUserID(int id){
     char query[1000];
 
     sprintf(query, "SELECT * FROM %s WHERE tokomedia_user_id = %d;", env.UserGetCartTokomediaTableName(), id);
+    const char *q = query;
+
+    int q_state = 0;
+    q_state = mysql_query(conn, q);
+
+    if(!q_state){
+        MYSQL_RES *res = mysql_store_result(conn);
+        MYSQL_ROW row;
+
+        while(row = mysql_fetch_row(res)){
+            struct CartTokomedia *temp = (struct CartTokomedia*) malloc(sizeof(struct CartTokomedia));
+            temp->id = Atoi(row[0]);
+            temp->item_name = row[1];
+            temp->price_per_unit = Atoi(row[2]);
+            temp->qty = Atoi(row[3]);
+            temp->total_price = Atoi(row[4]);
+            temp->created_at = row[5];
+            temp->itemlist_id = Atoi(row[6]);
+            temp->tokomedia_user_id = Atoi(row[7]);
+            temp->tokomedia_shop_id = Atoi(row[8]);
+            temp->next = NULL;
+
+            struct ItemlistTokomedia *UpdatedItemList = ServiceGetItemlistTokomediaByID(temp->itemlist_id);
+            if(UpdatedItemList == NULL){
+
+            }
+            else if((UpdatedItemList->price_per_unit - UpdatedItemList->discount_per_unit) != temp->price_per_unit){
+                int new_price_per_unit = UpdatedItemList->price_per_unit - UpdatedItemList->discount_per_unit;
+                struct UpdateCartTokomedia tempUpdate;
+                tempUpdate.id = temp->id;
+                tempUpdate.item_name = temp->item_name;
+                temp->price_per_unit = tempUpdate.price_per_unit = new_price_per_unit;
+                tempUpdate.qty = temp->qty;
+                temp->total_price = tempUpdate.total_price = temp->qty * (new_price_per_unit);
+                tempUpdate.created_at = temp->created_at;
+                tempUpdate.itemlist_id = temp->itemlist_id;
+                tempUpdate.tokomedia_user_id = temp->tokomedia_user_id;
+                tempUpdate.tokomedia_shop_id = temp->tokomedia_shop_id;
+
+                ServiceUpdateCartTokomedia(tempUpdate);
+
+
+            }
+
+            if(head == NULL){
+                head = tail = temp;
+            }
+            else{
+                tail->next = temp;
+                tail = tail->next;
+            }
+        }
+
+        mysql_close(conn);
+        return head;
+    }
+    else{
+        mysql_close(conn);
+        return head;
+    }
+}
+
+struct CartTokomedia* ServiceGetCartTokomediaByItemlistID(int id){
+    MYSQL *conn = ConnectDatabase();
+    struct CartTokomedia *head, *tail;
+    head = tail = NULL;
+
+    if(!conn){
+        mysql_close(conn);
+        return head;
+    }
+
+    Environment env;
+
+    char query[1000];
+
+    sprintf(query, "SELECT * FROM %s WHERE itemlist_id = %d;", env.UserGetCartTokomediaTableName(), id);
     const char *q = query;
 
     int q_state = 0;

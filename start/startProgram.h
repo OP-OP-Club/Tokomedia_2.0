@@ -1,13 +1,13 @@
 #ifndef START_PROGRAM_PARAM
 #define START_PROGRAM_PARAM 1
 
-
 #include"../config/connectDatabase.h"
 #include"../migration/migrateDatabaseTable.h"
 #include"../service/Tokomedia/serviceTokomediaShopAccount.h"
 #include"../service/Email/serviceEmail.h"
 #include"../tools/hasherTools.h"
-#include"../display/displayEmail.h"
+//#include"../display/displayEmail.h"
+#include"../display/displayMain.h"
 
 void StartProject(){
 
@@ -43,18 +43,11 @@ void StartProject(){
 
 //    MigrateAllTable();
 
-//    EmailMainMenu();
-//
-//    printf("%s\n", sha256Hashing("123"));
-//
-//    getchar();
-//    if(HasherCompare("123", "41eba433ed5578e976a574d120cfabfd4bdaf799012953f1ea10c69b4020b2e8")){
-//        printf("yes");
-//    }
-//    getchar();
-//    getchar();
+    GlobalMainMenu();
 
-    TokomediaMainMenu();
+//    EmailMainMenu();
+
+//    TokomediaMainMenu();
 
 //    char arr[500] = "test";
 //

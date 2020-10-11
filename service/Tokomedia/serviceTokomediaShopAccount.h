@@ -13,8 +13,9 @@
 #include"serviceItemlistTokomedia.h"
 #include"serviceOrderDetailsTokomedia.h"
 
-bool ServiceCreateTokomediaShopAccount(struct NewTokomediaShopAccount);
-bool ServiceUpdateTokomediaShopAccount(struct UpdateTokomediaShopAccount);
+bool ServiceCreateTokomediaShopAccount(struct NewTokomediaShopAccount input);
+bool ServiceUpdateTokomediaShopAccountNormal(struct UpdateTokomediaShopAccount input);
+bool ServiceUpdateTokomediaShopAccountNoPassword(struct UpdateTokomediaShopAccount input);
 bool ServiceDeleteTokomediaShopAccount(int id);
 struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByID(int id);
 struct TokomediaShopAccount* ServiceGetTokomediaShopAccountByEmail(char* email);
@@ -53,7 +54,7 @@ bool ServiceCreateTokomediaShopAccount(struct NewTokomediaShopAccount input) {
     }
 }
 
-bool ServiceUpdateTokomediaShopAccount(struct UpdateTokomediaShopAccount input) {
+bool ServiceUpdateTokomediaShopAccountNormal(struct UpdateTokomediaShopAccount input){
     MYSQL *conn = ConnectDatabase();
 
     if(!conn){
@@ -71,7 +72,34 @@ bool ServiceUpdateTokomediaShopAccount(struct UpdateTokomediaShopAccount input) 
     sprintf(query, "UPDATE %s SET name = \'%s\', email = \'%s\', password = \'%s\', balance = %d, security_code = \'%s\', created_at = \'%s\', last_login = \'%s\' WHERE id = %d;", env.UserGetTokomediaShopAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login, input.id);
 
     const char *q = query;
+    int q_state = 0;
+    q_state = mysql_query(conn, q);
 
+    mysql_close(conn);
+    if(!q_state){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool ServiceUpdateTokomediaShopAccountNoPassword(struct UpdateTokomediaShopAccount input){
+    MYSQL *conn = ConnectDatabase();
+
+    if(!conn){
+        mysql_close(conn);
+        return false;
+    }
+
+    Environment env;
+    input.email = ToLower(input.email);
+
+    char query[1000];
+
+    sprintf(query, "UPDATE %s SET name = \'%s\', email = \'%s\', password = \'%s\', balance = %d, security_code = \'%s\', created_at = \'%s\', last_login = \'%s\' WHERE id = %d;", env.UserGetTokomediaShopAccountTableName(), input.name, input.email, input.password, input.balance, input.security_code, input.created_at, input.last_login, input.id);
+
+    const char *q = query;
     int q_state = 0;
     q_state = mysql_query(conn, q);
 

@@ -156,6 +156,8 @@ struct Email* ServiceGetEmailByEmail(char* email){
 
     Environment env;
 
+    email = ToLower(email);
+
     char query[1000];
 
     sprintf(query, "SELECT * FROM %s WHERE email = \'%s\';", env.UserGetEmailTableName(), email);
